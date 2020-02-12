@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.Display;
 
 public class PongActivity extends Activity {
-    private PongGame mPongGame;
+    private RunPongGame mPongGame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,7 +16,7 @@ public class PongActivity extends Activity {
         Point size = new Point();
         display.getSize(size);
 
-        mPongGame = new PongGame(this, size.x, size.y);
+        mPongGame = new RunPongGame(this, size.x, size.y);
         setContentView(mPongGame);
     }
 
