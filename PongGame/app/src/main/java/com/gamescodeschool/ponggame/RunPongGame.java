@@ -3,9 +3,6 @@ package com.gamescodeschool.ponggame;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.RectF;
 import android.media.AudioAttributes;
 import android.media.AudioManager;
@@ -18,35 +15,23 @@ import android.view.SurfaceView;
 
 import java.io.IOException;
 
-class PongGame extends SurfaceView implements Runnable{
+class RunPongGame extends SurfaceView implements Runnable{
 
-    // Are we debugging?
     private final boolean DEBUGGING = true;
-
-    // These objects are needed to do the drawing
-    private SurfaceHolder mOurHolder;
-    private Canvas mCanvas;
-    private Paint mPaint;
-
-    // How many frames per second did we get?
-    private long mFPS;
-    // The number of milliseconds in a second
-    private final int MILLIS_IN_SECOND = 1000;
 
     // Holds the resolution of the screen
     private int mScreenX;
     private int mScreenY;
-    // How big will the text be?
-    private int mFontSize;
-    private int mFontMargin;
-
-    // The game objects
-    private Bat mBat;
-    private Ball mBall;
 
     // The current score and lives remaining
     private int mScore = 0;
     private int mLives = 3;
+
+    // The game objects
+    private Bat mBat;
+    private Ball mBall;
+    private DrawPong drawCanvas;
+
 
     // Here is the Thread and two control variables
     private Thread mGameThread = null;
@@ -66,7 +51,8 @@ class PongGame extends SurfaceView implements Runnable{
     // Called when this line:
     // mPongGame = new PongGame(this, size.x, size.y);
     // is executed from PongActivity
-    public PongGame(Context context, int x, int y) {
+    public RunPongGame(Context context, int x, int y) {
+
         // Super... calls the parent class
         // constructor of SurfaceView
         // provided by Android
@@ -77,20 +63,13 @@ class PongGame extends SurfaceView implements Runnable{
         mScreenX = x;
         mScreenY = y;
 
-        // Font is 5% (1/20th) of screen width
-        mFontSize = mScreenX / 20;
-        // Margin is 1.5% (1/75th) of screen width
-        mFontMargin = mScreenX / 75;
-
-        // Initialize the objects
-        // ready for drawing with
-        // getHolder is a method of SurfaceView
-        mOurHolder = getHolder();
-        mPaint = new Paint();
+        SurfaceHolder mOurHolder = getHolder();
 
         // Initialize the bat and ball
         mBall = new Ball(mScreenX);
         mBat = new Bat(mScreenX, mScreenY);
+
+        drawCanvas = new DrawPong(mOurHolder, mBall, mBat, mScreenX);
 
         // Prepare the SoundPool instance
         // Depending upon the version of Android
@@ -172,7 +151,7 @@ class PongGame extends SurfaceView implements Runnable{
 
             // Provided the game isn't paused call the update method
             if(!mPaused){
-                update();
+                drawCanvas.update();
                 // Now the bat and ball are in their new positions
                 // we can see if there have been any collisions
                 detectCollisions();
@@ -181,29 +160,11 @@ class PongGame extends SurfaceView implements Runnable{
 
             // The movement has been handled and collisions
             // detected now we can draw the scene.
-            draw();
+            drawCanvas.draw(mScore, mLives);
 
-            // How long did this frame/loop take?
-            // Store the answer in timeThisFrame
-            long timeThisFrame = System.currentTimeMillis() - frameStartTime;
-
-            // Make sure timeThisFrame is at least 1 millisecond
-            // because accidentally dividing by zero crashes the game
-            if (timeThisFrame > 0) {
-                // Store the current frame rate in mFPS
-                // ready to pass to the update methods of
-                // mBat and mBall next frame/loop
-                mFPS = MILLIS_IN_SECOND / timeThisFrame;
-            }
-
+            drawCanvas.frameRate(frameStartTime);
         }
 
-    }
-
-    private void update() {
-        // Update the bat and the ball
-        mBall.update(mFPS);
-        mBat.update(mFPS);
     }
 
     private void detectCollisions(){
@@ -251,42 +212,6 @@ class PongGame extends SurfaceView implements Runnable{
 
     }
 
-    // Draw the game objects and the HUD
-    void draw() {
-        if (mOurHolder.getSurface().isValid()) {
-            // Lock the canvas (graphics memory) ready to draw
-            mCanvas = mOurHolder.lockCanvas();
-
-            // Fill the screen with a solid color
-            mCanvas.drawColor(Color.argb
-                    (255, 26, 128, 182));
-
-            // Choose a color to paint with
-            mPaint.setColor(Color.argb
-                    (255, 255, 255, 255));
-
-            // Draw the bat and ball
-            mCanvas.drawRect(mBall.getRect(), mPaint);
-            mCanvas.drawRect(mBat.getRect(), mPaint);
-
-            // Choose the font size
-            mPaint.setTextSize(mFontSize);
-
-            // Draw the HUD
-            mCanvas.drawText("Score: " + mScore +
-                            "   Lives: " + mLives,
-                    mFontMargin , mFontSize, mPaint);
-
-            if(DEBUGGING){
-                printDebuggingText();
-            }
-            // Display the drawing on screen
-            // unlockCanvasAndPost is a method of SurfaceView
-            mOurHolder.unlockCanvasAndPost(mCanvas);
-        }
-
-    }
-
     // Handle all the screen touches
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
@@ -327,15 +252,6 @@ class PongGame extends SurfaceView implements Runnable{
                 break;
         }
         return true;
-    }
-
-    private void printDebuggingText(){
-        int debugSize = mFontSize / 2;
-        int debugStart = 150;
-        mPaint.setTextSize(debugSize);
-        mCanvas.drawText("FPS: " + mFPS ,
-                10, debugStart + debugSize, mPaint);
-
     }
 
     // This method is called by PongActivity
