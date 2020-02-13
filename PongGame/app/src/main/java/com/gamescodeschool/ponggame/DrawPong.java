@@ -5,7 +5,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.view.SurfaceHolder;
 
-public class DrawPong {
+/**
+ * Draws to the canvas during the Pong game.
+ */
+class DrawPong {
 
     private final boolean DEBUGGING = true;
 
@@ -21,8 +24,17 @@ public class DrawPong {
 
     private int mFontSize;
     private int mFontMargin;
+    private int rightHand;
+    private int nameFontSize;
 
-    public DrawPong(SurfaceHolder mOurHolder, Ball mBall, Bat mBat, int mScreenX) {
+    /**
+     * Sets all attributes to draw.
+     * @param mOurHolder required surfaceview method.
+     * @param mBall the ball object.
+     * @param mBat the bat object.
+     * @param mScreenX the screen width.
+     */
+    DrawPong(SurfaceHolder mOurHolder, Ball mBall, Bat mBat, int mScreenX) {
 
         this.mBall = mBall;
         this.mBat = mBat;
@@ -33,10 +45,13 @@ public class DrawPong {
 
         mFontSize = mScreenX / 20;
         mFontMargin = mScreenX / 75;
+        nameFontSize = mScreenX / 40;
+        // String length divided by 2 with some space!
+        rightHand = mScreenX - (nameFontSize * 16);
     }
 
     // Draw the game objects and the HUD
-    public void draw(int mScore, int mLives) {
+    void draw(int mScore, int mLives) {
 
         if (mOurHolder.getSurface().isValid()) {
             mCanvas = mOurHolder.lockCanvas();
@@ -55,7 +70,9 @@ public class DrawPong {
 
             // Choose the font size
             mPaint.setTextSize(mFontSize);
-            drawText(mScore, mLives, mPaint);
+            drawText(mScore, mLives);
+            mPaint.setTextSize(nameFontSize);
+            drawNames();
 
             if(DEBUGGING){
                 printDebuggingText();
@@ -68,13 +85,13 @@ public class DrawPong {
 
     }
 
-    public void update() {
+    void update() {
         // Update the bat and the ball
         mBall.update(mFPS);
         mBat.update(mFPS);
     }
 
-    public void frameRate(long frameStartTime) {
+    void frameRate(long frameStartTime) {
 
         long timeThisFrame = System.currentTimeMillis() - frameStartTime;
 
@@ -84,10 +101,14 @@ public class DrawPong {
     }
 
     // Draw the HUD
-    public void drawText(int mScore, int mLives, Paint mPaint) {
+    private void drawText(int mScore, int mLives) {
         mCanvas.drawText("Score: " + mScore +
                         "   Lives: " + mLives,
                         mFontMargin, mFontSize, mPaint);
+    }
+
+    private void drawNames() {
+        mCanvas.drawText("Chris Davidson & Ronny Ritprasert", rightHand , nameFontSize, mPaint);
     }
 
     private void printDebuggingText(){
