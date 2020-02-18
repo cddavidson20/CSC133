@@ -1,4 +1,4 @@
 # CSC133
-First commit test.
+## By Chris Davidson & Ronny Ritprasert
 
-Fixed.
+### Class assignments for CSC133 at Sac State!
