@@ -5,26 +5,25 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Point;
 
 import java.util.Random;
 
-class Apple {
+class Apple extends GameObject {
 
     // The location of the apple on the grid
     // Not in pixels
-    private Point location = new Point();
+    private PointP location = new PointP();
 
     // The range of values we can choose from
     // to spawn an apple
-    private Point mSpawnRange;
+    private PointP mSpawnRange;
     private int mSize;
 
     // An image to represent the apple
     private Bitmap mBitmapApple;
 
     /// Set up the apple in the constructor
-    Apple(Context context, Point sr, int s) {
+    Apple(Context context, PointP sr, int s) {
 
         // Make a note of the passed in spawn range
         mSpawnRange = sr;
@@ -50,7 +49,7 @@ class Apple {
 
     // Let SnakeGame know where the apple is
     // SnakeGame can share this with the snake
-    Point getLocation() {
+    PointP getLocation() {
         return location;
     }
 

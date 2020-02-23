@@ -6,23 +6,20 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.view.MotionEvent;
-
-import com.example.snake.R;
 
 import java.util.ArrayList;
 
-class Snake {
+class Snake extends GameObject{
 
     // The location in the grid of all the segments
-    private ArrayList<Point> segmentLocations;
+    private ArrayList<PointP> segmentLocations;
 
     // How big is each segment of the snake?
     private int mSegmentSize;
 
     // How big is the entire grid
-    private Point mMoveRange;
+    private PointP mMoveRange;
 
     // Where is the centre of the screen
     // horizontally in pixels?
@@ -46,7 +43,7 @@ class Snake {
     private Bitmap mBitmapBody;
 
 
-    Snake(Context context, Point mr, int ss) {
+    Snake(Context context, PointP mr, int ss) {
 
         // Initialize our ArrayList
         segmentLocations = new ArrayList<>();
@@ -125,7 +122,7 @@ class Snake {
         segmentLocations.clear();
 
         // Start with a single snake segment
-        segmentLocations.add(new Point(w / 2, h / 2));
+        segmentLocations.add(new PointP(w / 2, h / 2));
     }
 
 
@@ -143,7 +140,7 @@ class Snake {
 
         // Move the head in the appropriate heading
         // Get the existing head position
-        Point p = segmentLocations.get(0);
+        PointP p = segmentLocations.get(0);
 
         // Move it appropriately
         switch (heading) {
@@ -191,7 +188,7 @@ class Snake {
         return dead;
     }
 
-    boolean checkDinner(Point l) {
+    boolean checkDinner(PointP l) {
         //if (snakeXs[0] == l.x && snakeYs[0] == l.y) {
         if (segmentLocations.get(0).x == l.x &&
                 segmentLocations.get(0).y == l.y) {
@@ -201,7 +198,7 @@ class Snake {
             // This is OK because on the next call to
             // move it will take the position of
             // the segment in front of it
-            segmentLocations.add(new Point(-10, -10));
+            segmentLocations.add(new PointP(-10, -10));
             return true;
         }
         return false;
