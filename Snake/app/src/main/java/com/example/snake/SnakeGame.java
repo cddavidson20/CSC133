@@ -15,9 +15,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-import com.example.snake.Apple;
-import com.example.snake.R;
-import com.example.snake.Snake;
 
 import java.io.IOException;
 
@@ -98,15 +95,9 @@ class SnakeGame extends SurfaceView implements Runnable {
         mPaint = new Paint();
 
         // Call the constructors of our two game objects
-        mApple = new Apple(context,
-                new Point(NUM_BLOCKS_WIDE,
-                        mNumBlocksHigh),
-                blockSize);
+        mApple = new Apple(context, new PointP(NUM_BLOCKS_WIDE, mNumBlocksHigh), blockSize);
 
-        mSnake = new Snake(context,
-                new Point(NUM_BLOCKS_WIDE,
-                        mNumBlocksHigh),
-                blockSize);
+        mSnake = new Snake(context, new PointP(NUM_BLOCKS_WIDE, mNumBlocksHigh), blockSize);
 
     }
 
