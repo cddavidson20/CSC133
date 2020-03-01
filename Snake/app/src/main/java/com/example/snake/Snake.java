@@ -8,12 +8,12 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 
-import java.util.ArrayList;
+import java.util.Vector;
 
 class Snake extends GameObject{
 
     // The location in the grid of all the segments
-    private ArrayList<PointP> segmentLocations;
+    private Vector<PointP> segmentLocations;
 
     // How big is each segment of the snake?
     private int mSegmentSize;
@@ -46,7 +46,7 @@ class Snake extends GameObject{
     Snake(Context context, PointP mr, int ss) {
 
         // Initialize our ArrayList
-        segmentLocations = new ArrayList<>();
+        segmentLocations = new Vector<>();
 
         // Initialize the segment size and movement
         // range from the passed in parameters
