@@ -13,6 +13,8 @@ public class GameObject {
     private AppleBuilder mGoodApple;
     private AppleBuilder mBadApple;
 
+    private Sounds sound;
+
     Snake mSnake;
 
     // The size in segments of the playable area
@@ -21,7 +23,7 @@ public class GameObject {
 
     GameObject(){}
 
-    GameObject(Context context, Point size){
+    GameObject(Context context, Point size) {
 
         // Work out how many pixels each block is
         int blockSize = size.x / NUM_BLOCKS_WIDE;
@@ -32,6 +34,8 @@ public class GameObject {
         this.mBadApple = new BadApple(context, new PointP(NUM_BLOCKS_WIDE, mNumBlocksHigh), blockSize);
 
         this.mSnake = new Snake(context, new PointP(NUM_BLOCKS_WIDE, mNumBlocksHigh), blockSize);
+
+        sound = new Sounds(context);
     }
 
     void draw(Canvas mCanvas, Paint mPaint) {
@@ -48,7 +52,7 @@ public class GameObject {
         mGoodApple.spawn();
     }
 
-    void update(SoundPool mSP, PlayState playState, int mEat_ID, int mCrashID) {
+    void update(PlayState playState) {
         // Move the snake
         mSnake.move();
 
@@ -69,18 +73,19 @@ public class GameObject {
             }
 
             // Play a sound
-            mSP.play(mEat_ID, 1, 1, 0, 0, 1);
+            sound.playEatGood();
         }
 
         if (mSnake.checkDinner(mBadApple.getLocation())) {
             playState.mScore -= 2;
             mBadApple.despawn();
+            sound.playEatBad();
         }
 
         // Did the snake die?
         if (mSnake.detectDeath()) {
             // Pause the game ready to start again
-            mSP.play(mCrashID, 1, 1, 0, 0, 1);
+            sound.playCrash();
 
             playState.mPaused = true;
         }
