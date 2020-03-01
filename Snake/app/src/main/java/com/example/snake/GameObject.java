@@ -65,9 +65,9 @@ public class GameObject {
                 mBadApple.spawn();
             }
 
-            mGoodApple.spawn();
+
             int appleScore = rand.nextInt(3) + 1;
-            System.out.println("apple: " + appleScore);
+            mGoodApple.spawn();
             playState.mScore += appleScore;
 
             // Play a sound

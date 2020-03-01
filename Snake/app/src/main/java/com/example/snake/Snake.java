@@ -1,10 +1,7 @@
 package com.example.snake;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 
@@ -15,33 +12,25 @@ class Snake extends GameObject{
     // The location in the grid of all the segments
     private Vector<PointP> segmentLocations;
 
-    // How big is each segment of the snake?
-    private int mSegmentSize;
-
     // How big is the entire grid
     private PointP mMoveRange;
+
+    // For tracking movement Heading
+    enum Heading {
+        UP, RIGHT, DOWN, LEFT
+    }
+
+    private SnakeHead snakeHead;
+    private SnakeBody snakeBody;
 
     // Where is the centre of the screen
     // horizontally in pixels?
     private int halfWayPoint;
 
-    // For tracking movement Heading
-    private enum Heading {
-        UP, RIGHT, DOWN, LEFT
-    }
-
     // Start by heading to the right
     private Heading heading = Heading.RIGHT;
 
-    // A bitmap for each direction the head can face
-    private Bitmap mBitmapHeadRight;
-    private Bitmap mBitmapHeadLeft;
-    private Bitmap mBitmapHeadUp;
-    private Bitmap mBitmapHeadDown;
-
-    // A bitmap for the body
-    private Bitmap mBitmapBody;
-
+    Snake(){}
 
     Snake(Context context, PointP mr, int ss) {
 
@@ -50,66 +39,15 @@ class Snake extends GameObject{
 
         // Initialize the segment size and movement
         // range from the passed in parameters
-        mSegmentSize = ss;
         mMoveRange = mr;
 
-        // Create and scale the bitmaps
-        mBitmapHeadRight = BitmapFactory
-                .decodeResource(context.getResources(),
-                        R.drawable.head);
-
-        // Create 3 more versions of the head for different headings
-        mBitmapHeadLeft = BitmapFactory
-                .decodeResource(context.getResources(),
-                        R.drawable.head);
-
-        mBitmapHeadUp = BitmapFactory
-                .decodeResource(context.getResources(),
-                        R.drawable.head);
-
-        mBitmapHeadDown = BitmapFactory
-                .decodeResource(context.getResources(),
-                        R.drawable.head);
-
-        // Modify the bitmaps to face the snake head
-        // in the correct direction
-        mBitmapHeadRight = Bitmap
-                .createScaledBitmap(mBitmapHeadRight,
-                        ss, ss, false);
-
-        // A matrix for scaling
-        Matrix matrix = new Matrix();
-        matrix.preScale(-1, 1);
-
-        mBitmapHeadLeft = Bitmap
-                .createBitmap(mBitmapHeadRight,
-                        0, 0, ss, ss, matrix, true);
-
-        // A matrix for rotating
-        matrix.preRotate(-90);
-        mBitmapHeadUp = Bitmap
-                .createBitmap(mBitmapHeadRight,
-                        0, 0, ss, ss, matrix, true);
-
-        // Matrix operations are cumulative
-        // so rotate by 180 to face down
-        matrix.preRotate(180);
-        mBitmapHeadDown = Bitmap
-                .createBitmap(mBitmapHeadRight,
-                        0, 0, ss, ss, matrix, true);
-
-        // Create and scale the body
-        mBitmapBody = BitmapFactory
-                .decodeResource(context.getResources(),
-                        R.drawable.body);
-
-        mBitmapBody = Bitmap
-                .createScaledBitmap(mBitmapBody,
-                        ss, ss, false);
+        snakeHead = new SnakeHead(context, ss);
+        snakeBody = new SnakeBody(context, ss);
 
         // The halfway point across the screen in pixels
         // Used to detect which side of screen was pressed
         halfWayPoint = mr.x * ss / 2;
+
     }
 
     // Get the snake ready for a new game
@@ -205,56 +143,12 @@ class Snake extends GameObject{
     }
 
     void draw(Canvas canvas, Paint paint) {
-
         // Don't run this code if ArrayList has nothing in it
-        if (!segmentLocations.isEmpty()) {
-            // All the code from this method goes here
-            // Draw the head
-            switch (heading) {
-                case RIGHT:
-                    canvas.drawBitmap(mBitmapHeadRight,
-                            segmentLocations.get(0).x
-                                    * mSegmentSize,
-                            segmentLocations.get(0).y
-                                    * mSegmentSize, paint);
-                    break;
-
-                case LEFT:
-                    canvas.drawBitmap(mBitmapHeadLeft,
-                            segmentLocations.get(0).x
-                                    * mSegmentSize,
-                            segmentLocations.get(0).y
-                                    * mSegmentSize, paint);
-                    break;
-
-                case UP:
-                    canvas.drawBitmap(mBitmapHeadUp,
-                            segmentLocations.get(0).x
-                                    * mSegmentSize,
-                            segmentLocations.get(0).y
-                                    * mSegmentSize, paint);
-                    break;
-
-                case DOWN:
-                    canvas.drawBitmap(mBitmapHeadDown,
-                            segmentLocations.get(0).x
-                                    * mSegmentSize,
-                            segmentLocations.get(0).y
-                                    * mSegmentSize, paint);
-                    break;
-            }
-
-            // Draw the snake body one block at a time
-            for (int i = 1; i < segmentLocations.size(); i++) {
-                canvas.drawBitmap(mBitmapBody,
-                        segmentLocations.get(i).x
-                                * mSegmentSize,
-                        segmentLocations.get(i).y
-                                * mSegmentSize, paint);
-            }
+        if (!(segmentLocations.isEmpty())) {
+            snakeHead.draw(canvas, paint,heading, segmentLocations.get(0));
+            snakeBody.draw(canvas, paint, segmentLocations);
         }
     }
-
 
     // Handle changing direction
     void switchHeading(MotionEvent motionEvent) {
@@ -295,4 +189,5 @@ class Snake extends GameObject{
             }
         }
     }
+
 }
