@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.media.SoundPool;
 
 import java.util.Random;
 
@@ -64,12 +63,15 @@ public class GameObject {
             Random rand = new Random();
 
             if (rand.nextDouble() < 0.2) {
-                System.out.println("Bad Apple");
+                //System.out.println("Bad Apple");
+                System.out.println(rand.nextDouble());
                 mBadApple.spawn();
             } else {
-                System.out.println("Good Apple");
+                //System.out.println("Good Apple");
                 mGoodApple.spawn();
-                playState.mScore += (rand.nextInt(2) +1);
+                int appleScore = rand.nextInt(3) + 1;
+                System.out.println("apple score: " + appleScore);
+                playState.mScore += (appleScore);
             }
 
             // Play a sound
