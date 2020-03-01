@@ -59,20 +59,16 @@ public class GameObject {
         if (mSnake.checkDinner(mGoodApple.getLocation())) {
             // This reminds me of Edge of Tomorrow.
             // One day the goodApple will be ready!
-
             Random rand = new Random();
 
             if (rand.nextDouble() < 0.2) {
-                //System.out.println("Bad Apple");
-                System.out.println(rand.nextDouble());
                 mBadApple.spawn();
-            } else {
-                //System.out.println("Good Apple");
-                mGoodApple.spawn();
-                int appleScore = rand.nextInt(3) + 1;
-                System.out.println("apple score: " + appleScore);
-                playState.mScore += (appleScore);
             }
+
+            mGoodApple.spawn();
+            int appleScore = rand.nextInt(3) + 1;
+            System.out.println("apple: " + appleScore);
+            playState.mScore += appleScore;
 
             // Play a sound
             sound.playEatGood();
