@@ -5,7 +5,7 @@ import android.graphics.Paint;
 
 import java.util.Random;
 
-public abstract class AppleBuilder {
+abstract class AppleBuilder {
 
     // The location of the goodApple on the grid
     // Not in pixels
@@ -25,7 +25,7 @@ public abstract class AppleBuilder {
 
 
     // This is called every time an apple is eaten
-    public void spawn() {
+    void spawn() {
         // Choose two random values and place the apple
         Random random = new Random();
         location.x = random.nextInt(mSpawnRange.x) + 1;
@@ -33,14 +33,14 @@ public abstract class AppleBuilder {
     }
 
     // This is called every time a bad apple is eaten
-    public void despawn() {
+    void despawn() {
         location.x = -10;
         location.y = -10;
     }
 
     // Let SnakeGame know where the apple is
     // SnakeGame can share this with the snake
-    public PointP getLocation() {
+    PointP getLocation() {
         return location;
     }
 

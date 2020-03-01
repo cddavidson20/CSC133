@@ -4,10 +4,14 @@ package com.example.snake;
 // the state of the game and the score
 class PlayState {
 
-    volatile boolean mPlaying = false;
-    volatile boolean mPaused = true;
+    volatile boolean mPlaying;
+    volatile boolean mPaused;
     int mScore;
 
-    PlayState(){}
+    PlayState(){
+        mPlaying = false;
+        mPaused = true;
+        mScore = 0;
+    }
 
 }
