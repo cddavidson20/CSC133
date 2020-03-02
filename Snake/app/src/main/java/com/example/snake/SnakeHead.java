@@ -9,6 +9,8 @@ import android.graphics.Paint;
 
 class SnakeHead extends Snake {
 
+     PointP headLocation;
+
     // A bitmap for each direction the head can face
     private Bitmap mBitmapHeadRight;
     private Bitmap mBitmapHeadLeft;
@@ -103,5 +105,13 @@ class SnakeHead extends Snake {
                                 * mSegmentSize, paint);
                 break;
         }
+    }
+
+    void addHead(PointP headLocation) {
+        this.headLocation = headLocation;
+    }
+
+    void clearHead(int w, int h) {
+        headLocation = null;
     }
 }
