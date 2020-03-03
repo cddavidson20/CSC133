@@ -79,6 +79,6 @@ public class SnakeBody extends Snake {
 
     void clearBodySegments() {
         bodySegments.clear();
-        addBodySegments(new PointP(-10,-10));
+        addBodySegments(new PointP());
     }
 }

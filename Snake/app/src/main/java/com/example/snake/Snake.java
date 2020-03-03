@@ -5,7 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.MotionEvent;
 
-class Snake extends GameObject{
+class Snake extends GameObject {
 
     // How big is the entire grid
     private PointP mMoveRange;
@@ -113,7 +113,7 @@ class Snake extends GameObject{
             // This is OK because on the next call to
             // move it will take the position of
             // the segment in front of it
-            snakeBody.addBodySegments(new PointP(-10, -10));
+            snakeBody.addBodySegments(new PointP());
             return true;
         }
         return false;
