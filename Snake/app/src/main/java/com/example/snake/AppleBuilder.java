@@ -1,50 +1,46 @@
 package com.example.snake;
 
-import android.graphics.Canvas;
-import android.graphics.Paint;
+import android.content.Context;
 
-import java.util.Random;
+class AppleBuilder {
 
-abstract class AppleBuilder {
-
-    // The location of the goodApple on the grid
-    // Not in pixels
-    private PointP location = new PointP();
-
-    // The range of values we can choose from
-    // to spawn an goodApple
+    // An image to represent the goodApple
+    private Context context;
+    private PointP location;
     private PointP mSpawnRange;
+    private int mSize;
+    private int appleID;
 
-    AppleBuilder(PointP sr){
-        // Make a note of the passed in spawn range
-        mSpawnRange = sr;
-
-        // Hide the goodApple off-screen until the game starts
-        location.x = -10;
+    AppleBuilder(Context context, PointP sr, int s, PointP location, int appleID) {
+        this.context = context; //required
+        this.mSpawnRange = sr;
+        this.mSize = s;
+        this.location = location;
+        this.appleID = appleID;
     }
 
-
-    // This is called every time an apple is eaten
-    void spawn() {
-        // Choose two random values and place the apple
-        Random random = new Random();
-        location.x = random.nextInt(mSpawnRange.x) + 1;
-        location.y = random.nextInt(mSpawnRange.y - 1) + 1;
+    //not needed right now but may be needed in future applications
+    void setAppleId(int appleID) {
+        this.appleID = appleID;
     }
 
-    // This is called every time a bad apple is eaten
-    void despawn() {
-        location.x = -10;
-        location.y = -10;
+    //not needed right now but may be needed in future applications
+    void setLocation(PointP location) {
+        this.location = location;
     }
 
-    // Let SnakeGame know where the apple is
-    // SnakeGame can share this with the snake
-    PointP getLocation() {
-        return location;
+    //not needed right now but may be needed in future applications
+    void setSpawnRange(PointP mSpawnRange) {
+        this.mSpawnRange = mSpawnRange;
     }
 
-    // Draw the apple
-    abstract void draw(Canvas canvas, Paint paint);
+    //not needed right now but may be needed in future applications
+    void setSize(int mSize) {
+        this.mSize = mSize;
+    }
+
+    Apple build() {
+        return new Apple(context, mSpawnRange, mSize, location, appleID);
+    }
 
 }

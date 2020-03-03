@@ -6,13 +6,20 @@ import android.graphics.Paint;
 import android.graphics.Point;
 
 import java.util.Random;
+import java.util.Vector;
 
-public class GameObject {
+class GameObject {
 
-    private AppleBuilder mGoodApple;
-    private AppleBuilder mBadApple;
+    private Vector<Apple> mApples;
+
+    // The range of values we can choose from
+    // to spawn an goodApple
+    private PointP mSpawnRange;
 
     private Sounds sound;
+
+    private Context context;
+    private int blockSize;
 
     Snake mSnake;
 
@@ -24,22 +31,27 @@ public class GameObject {
 
     GameObject(Context context, Point size) {
 
+        //define the context so that apples can use it when made
+        this.context = context;
         // Work out how many pixels each block is
-        int blockSize = size.x / NUM_BLOCKS_WIDE;
+        this.blockSize = size.x / NUM_BLOCKS_WIDE;
         // How many blocks of the same size will fit into the height
         mNumBlocksHigh = size.y / blockSize;
 
-        this.mGoodApple = new GoodApple(context, new PointP(NUM_BLOCKS_WIDE, mNumBlocksHigh), blockSize);
-        this.mBadApple = new BadApple(context, new PointP(NUM_BLOCKS_WIDE, mNumBlocksHigh), blockSize);
+
+        mApples = new Vector<>();
+        mSpawnRange = new PointP(NUM_BLOCKS_WIDE, mNumBlocksHigh);
 
         this.mSnake = new Snake(context, new PointP(NUM_BLOCKS_WIDE, mNumBlocksHigh), blockSize);
 
         sound = new Sounds(context);
     }
 
+    //draw the snake AND the apples in the vector
     void draw(Canvas mCanvas, Paint mPaint) {
-        mGoodApple.draw(mCanvas, mPaint);
-        mBadApple.draw(mCanvas, mPaint);
+        for (int i = 0; i < mApples.size(); i++) {
+            mApples.get(i).draw(mCanvas, mPaint);
+        }
         mSnake.draw(mCanvas, mPaint);
     }
 
@@ -47,45 +59,82 @@ public class GameObject {
         // reset the snake
         mSnake.reset(NUM_BLOCKS_WIDE, mNumBlocksHigh);
 
-        // Get the goodApple ready for dinner
-        mGoodApple.spawn();
+        //make sure the apples are cleared
+        mApples.clear();
+
+        // Get the first apple ready for dinner
+        Apple apple = new AppleBuilder(
+                        context, mSpawnRange, blockSize,
+                        new PointP(), 1
+                        ).build();
+
+        mApples.add(apple);
+        mApples.get(0).spawn();
     }
 
     void update(PlayState playState) {
         // Move the snake
         mSnake.move();
 
-        // Did the head of the snake eat the apple?
-        if (mSnake.checkDinner(mGoodApple.getLocation())) {
-            // This reminds me of Edge of Tomorrow.
-            // One day the goodApple will be ready!
-            Random rand = new Random();
+        Random rand = new Random();
 
-            if (rand.nextDouble() < 0.2) {
-                mBadApple.spawn();
+        // This is the logic for the apples
+        // looping through and building new apples etc.
+        for (int i = 0; i < mApples.size(); i++) {
+            Apple apple = mApples.get(i);
+            if (mSnake.checkDinner(apple.getLocation())) {
+                int previousScore = playState.mScore;
+                apple.updateScore(playState, sound);
+
+                int appleID = rand.nextInt(3) + 1;
+                apple = new AppleBuilder(
+                        context, mSpawnRange, blockSize,
+                        new PointP(), appleID
+                        ).build();
+                mApples.set(i, apple);
+                mApples.get(i).spawn();
+
+                if (determinePassedMultipleOfFive(previousScore, playState.mScore)){
+                    if (rand.nextDouble() < 0.2) {
+                        Apple newApple = new AppleBuilder(
+                                context, mSpawnRange, blockSize,
+                                new PointP(), 0
+                                ).build();
+                        mApples.add(newApple);
+                        mApples.get(mApples.size()-1).spawn();
+                    } else {
+                        appleID = rand.nextInt(3) + 1;
+                        Apple newApple = new AppleBuilder(
+                                context, mSpawnRange, blockSize,
+                                new PointP(), appleID
+                                ).build();
+                        mApples.add(newApple);
+                        mApples.get(mApples.size()-1).spawn();
+                    }
+                }
             }
-
-
-            int appleScore = rand.nextInt(3) + 1;
-            mGoodApple.spawn();
-            playState.mScore += appleScore;
-
-            // Play a sound
-            sound.playEatGood();
-        }
-
-        if (mSnake.checkDinner(mBadApple.getLocation())) {
-            playState.mScore -= 2;
-            mBadApple.despawn();
-            sound.playEatBad();
         }
 
         // Did the snake die?
         if (mSnake.detectDeath()) {
             // Pause the game ready to start again
             sound.playCrash();
-
             playState.mPaused = true;
+        }
+    }
+
+    // Sometimes points can go from say 3 to 6 skipping 5
+    // This is meant to check that case and return true
+    // if it passed a multiple of 5
+    private boolean determinePassedMultipleOfFive(int previousScore, int currentScore) {
+        if (((previousScore + 1) % 5) == 0 && (previousScore + 1) <= currentScore) {
+            return true;
+        } else if (((previousScore + 2) % 5) == 0 && (previousScore + 2) <= currentScore) {
+            return true;
+        } else if (((previousScore + 3) % 5) == 0 && (previousScore + 3) <= currentScore) {
+            return true;
+        } else {
+            return false;
         }
     }
 
