@@ -1,4 +1,4 @@
-package csc133.towerdefense;
+package csc133.towerdefense.GameObjects;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -6,20 +6,26 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.view.MotionEvent;
 
+import csc133.towerdefense.GameObjects.enemies.Enemy;
+import csc133.towerdefense.GameObjects.towers.AbstractTower;
+import csc133.towerdefense.GameObjects.towers.DefenseTower;
+
 public class GameObject {
 
     private Point mSpawnRange;
 
     private Context context;
     private int blockSize;
+
     private Enemy enemy;
+    private AbstractTower tower;
 
     private final int NUM_BLOCKS_WIDE = 40;
     private int mNumBlocksHigh;
 
-    GameObject(){}
+    public GameObject(){}
 
-    GameObject(Context context, Point size) {
+    public GameObject(Context context, Point size) {
 
         //define the context so that apples can use it when made
         this.context = context;
@@ -32,21 +38,23 @@ public class GameObject {
         mSpawnRange = new Point(NUM_BLOCKS_WIDE, mNumBlocksHigh);
 
         enemy = new Enemy(context, blockSize, new Point(NUM_BLOCKS_WIDE, mNumBlocksHigh));
+        tower = new DefenseTower(context, new Point(NUM_BLOCKS_WIDE*10, mNumBlocksHigh*10));
     }
 
-    void newGame() {
+    public void newGame() {
         enemy.reset(NUM_BLOCKS_WIDE, mNumBlocksHigh);
     }
 
-    void draw(Canvas mCanvas, Paint mPaint) {
+    public void draw(Canvas mCanvas, Paint mPaint) {
         enemy.draw(mCanvas, mPaint);
+        tower.draw(mCanvas, mPaint);
     }
 
-    void update() {
+    public void update() {
         enemy.move();
     }
 
-    void switchHeading(MotionEvent motionEvent) {
+    public void switchHeading(MotionEvent motionEvent) {
         enemy.switchHeading(motionEvent);
     }
 }
