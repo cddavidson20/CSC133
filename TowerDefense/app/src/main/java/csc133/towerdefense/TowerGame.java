@@ -9,7 +9,12 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-public class TowerGame extends SurfaceView implements Runnable {
+import java.util.ArrayList;
+
+import csc133.towerdefense.GameObjects.GameObject;
+import csc133.towerdefense.HUD;
+
+public class TowerGame extends SurfaceView implements Runnable, GameEngineBroadcaster{
 
     // Objects for the game loop/thread
     private Thread mThread = null;
@@ -17,6 +22,8 @@ public class TowerGame extends SurfaceView implements Runnable {
     private long mNextFrameTime;
     // Is the game currently playing and or paused?
 
+    private ArrayList<InputObserver> inputObservers = new ArrayList();
+    UIController uiController;
 
     // Objects for drawing
     private Canvas mCanvas;
@@ -24,18 +31,19 @@ public class TowerGame extends SurfaceView implements Runnable {
     private Paint mPaint;
 
     // Is the game currently playing and or paused?
-    private volatile boolean mPlaying = false;
-    private volatile boolean mPaused = true;
+    private GameState gameState;
+    private HUD hud;
 
     private GameObject gameObjects;
 
     public TowerGame(Context context, Point size) {
         super(context);
 
-        // Initialize the drawing objects
+        uiController = new UIController(this);
         mSurfaceHolder = getHolder();
         mPaint = new Paint();
-
+        gameState = new GameState(context);
+        hud = new HUD(size);
         gameObjects = new GameObject(context, size);
 
     }
@@ -52,19 +60,7 @@ public class TowerGame extends SurfaceView implements Runnable {
             mPaint.setTextSize(120);
 
             gameObjects.draw(mCanvas, mPaint);
-
-            // Draw some text while paused
-            if (mPaused) {
-
-                // Set the size and color of the mPaint for the text
-                mPaint.setColor(Color.argb(255, 255, 255, 255));
-                mPaint.setTextSize(250);
-
-                // Draw the message
-                // We will give this an international upgrade soon
-                mCanvas.drawText("Tap To Play!", 200, 700, mPaint);
-            }
-
+            hud.draw(mCanvas, mPaint, gameState);
 
             // Unlock the mCanvas and reveal the graphics for this frame
             mSurfaceHolder.unlockCanvasAndPost(mCanvas);
@@ -78,11 +74,16 @@ public class TowerGame extends SurfaceView implements Runnable {
         mNextFrameTime = System.currentTimeMillis();
     }
 
+    // For the game engine broadcaster interface
+    public void addObserver(InputObserver o) {
+        inputObservers.add(o);
+    }
+
     // Handles the game loop
     @Override
     public void run() {
-        while (mPlaying) {
-            if (!mPaused) {
+        while (gameState.getThreadRunning()) {
+            if (!gameState.getPaused()) {
                 // Update 10 times a second
                 if (updateRequired()) {
                     update();
@@ -123,7 +124,7 @@ public class TowerGame extends SurfaceView implements Runnable {
 
     // Stop the thread
     public void pause() {
-        mPlaying = false;
+        gameState.stopEverything();
         try {
             mThread.join();
         } catch (InterruptedException e) {
@@ -134,7 +135,7 @@ public class TowerGame extends SurfaceView implements Runnable {
 
     // Start the thread
     public void resume() {
-        mPlaying = true;
+        gameState.startThread();
         mThread = new Thread(this);
         try {
             mThread.start();
@@ -147,12 +148,14 @@ public class TowerGame extends SurfaceView implements Runnable {
     public boolean onTouchEvent(MotionEvent motionEvent) {
         switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
             case MotionEvent.ACTION_UP:
-                if (mPaused) {
-                    mPaused = false;
-                    newGame();
+                if (gameState.getPaused()) {
+                    gameState.startNewGame();
 
                     // Don't want to process snake direction for this tap
                     return true;
+                }
+                for (InputObserver o : inputObservers) {
+                    o.handleInput(motionEvent, gameState, HUD.getControls());
                 }
 
                 // Let the Snake class handle the input

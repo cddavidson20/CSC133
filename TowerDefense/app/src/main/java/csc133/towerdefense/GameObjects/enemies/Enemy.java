@@ -1,4 +1,4 @@
-package csc133.towerdefense;
+package csc133.towerdefense.GameObjects.enemies;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,6 +8,9 @@ import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.Paint;
 import android.view.MotionEvent;
+
+import csc133.towerdefense.GameObjects.GameObject;
+import csc133.towerdefense.R;
 
 public class Enemy extends GameObject {
 
@@ -31,6 +34,7 @@ public class Enemy extends GameObject {
     private int halfWayPoint;
 
     public Enemy(Context context, int bs, Point mr) {
+        super();
         blocksize = bs;
         // Create and scale the bitmaps
         mBitmapHeadRight = BitmapFactory
@@ -84,7 +88,7 @@ public class Enemy extends GameObject {
         headLocation = new Point(new Point(40 / 2, mNumBlocksHigh / 2));
     }
 
-    void draw(Canvas canvas, Paint paint) {
+    public void draw(Canvas canvas, Paint paint) {
         // Draw the head
         switch (heading) {
             case RIGHT:
@@ -121,7 +125,7 @@ public class Enemy extends GameObject {
         }
     }
 
-    void reset(int w, int h) {
+    public void reset(int w, int h) {
 
         // Reset the heading
         heading = Heading.RIGHT;
@@ -129,7 +133,7 @@ public class Enemy extends GameObject {
         headLocation = new Point(new Point(w / 2, h / 2));
     }
 
-    void move() {
+    public void move() {
         Point p = headLocation;
 
         // Move it appropriately
@@ -153,7 +157,7 @@ public class Enemy extends GameObject {
     }
 
     // Handle changing direction
-    void switchHeading(MotionEvent motionEvent) {
+    public void switchHeading(MotionEvent motionEvent) {
 
         // Is the tap on the right hand side?
         if (motionEvent.getX() >= halfWayPoint) {
@@ -171,7 +175,6 @@ public class Enemy extends GameObject {
                 case LEFT:
                     heading = Heading.UP;
                     break;
-
             }
         } else {
             // Rotate left
