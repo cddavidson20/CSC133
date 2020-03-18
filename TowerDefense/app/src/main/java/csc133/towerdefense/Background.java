@@ -22,8 +22,8 @@ public class Background {
 
         mBitmap = Bitmap
                 .createScaledBitmap(mBitmap,
-                        (int)objectSize.x,
-                        (int)objectSize.y,
+                        objectSize.x,
+                        objectSize.y,
                         false);
     }
 
@@ -31,11 +31,10 @@ public class Background {
 
         int width = mBitmap.getWidth();
         int height = mBitmap.getHeight();
-        int startY = 0;
 
         // For the regular bitmap
         Rect fromRect1 = new Rect(0, 0, width, height);
-        Rect toRect1 = new Rect(0, startY, width, width);
+        Rect toRect1 = new Rect(0, 0, width, height);
 
         //draw the two background bitmaps
         canvas.drawBitmap(mBitmap, fromRect1, toRect1, paint);
