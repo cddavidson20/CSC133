@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
+import android.graphics.PointF;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -36,6 +37,9 @@ public class TowerGame extends SurfaceView implements Runnable, GameEngineBroadc
 
     private GameObject gameObjects;
 
+    private Background background;
+    private String mBitMapName;
+
     public TowerGame(Context context, Point size) {
         super(context);
 
@@ -46,6 +50,10 @@ public class TowerGame extends SurfaceView implements Runnable, GameEngineBroadc
         hud = new HUD(size);
         gameObjects = new GameObject(context, size);
 
+        mBitMapName = "background";
+        background = new Background();
+        background.initialize(context, mBitMapName, size);
+
     }
 
     public void draw(){
@@ -53,7 +61,7 @@ public class TowerGame extends SurfaceView implements Runnable, GameEngineBroadc
             mCanvas = mSurfaceHolder.lockCanvas();
 
             // Fill the screen with a color
-            mCanvas.drawColor(Color.argb(255, 26, 128, 182));
+            background.draw(mCanvas, mPaint);
 
             // Set the size and color of the mPaint for the text
             mPaint.setColor(Color.argb(255, 255, 255, 255));
