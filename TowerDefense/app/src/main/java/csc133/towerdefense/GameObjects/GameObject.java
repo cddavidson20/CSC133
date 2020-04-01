@@ -37,12 +37,13 @@ public class GameObject {
 
         mSpawnRange = new Point(NUM_BLOCKS_WIDE, mNumBlocksHigh);
 
-        enemy = new Enemy(context, blockSize, new Point(NUM_BLOCKS_WIDE, mNumBlocksHigh));
+        enemy = new Enemy(context, blockSize, new Point(50, 50));
         tower = new DefenseTower(context, new Point(NUM_BLOCKS_WIDE*10, mNumBlocksHigh*10));
     }
 
     public void newGame() {
-        enemy.reset(NUM_BLOCKS_WIDE, mNumBlocksHigh);
+        //enemy.reset(NUM_BLOCKS_WIDE, mNumBlocksHigh);
+        spawn();
     }
 
     public void draw(Canvas mCanvas, Paint mPaint) {
@@ -56,5 +57,8 @@ public class GameObject {
 
     public void switchHeading(MotionEvent motionEvent) {
         enemy.switchHeading(motionEvent);
+    }
+
+    public void spawn() {
     }
 }

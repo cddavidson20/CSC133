@@ -4,9 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.view.MotionEvent;
 
 import csc133.towerdefense.GameObjects.GameObject;
@@ -14,7 +16,9 @@ import csc133.towerdefense.R;
 
 public class Enemy extends GameObject {
 
-    Point headLocation;
+    private Point headLocation;
+
+    private Point[] path;
 
     // A bitmap for each direction the head can face
     private Bitmap mBitmapHeadRight;
@@ -83,12 +87,55 @@ public class Enemy extends GameObject {
 
         // How many blocks of the same size will fit into the height
         mNumBlocksHigh = mr.y / blocksize;
-
         halfWayPoint = mr.x * blocksize / 2;
-        headLocation = new Point(new Point(40 / 2, mNumBlocksHigh / 2));
+        hudOffset = new Point(0, (int)(2.5 * blocksize));
+
+        path = new Point[] {
+                new Point(0, 0),
+                new Point(25, 0),
+                new Point(25, 15),
+                new Point(50, 15)
+        };
+        headLocation = new Point(path[0].x, path[0].y);
+    }
+
+    private Point hudOffset;
+
+    public void drawPath(Canvas canvas, Paint paint) {
+        //riksy coding only
+        for (int i = 0; i < path.length - 1; ++i) {
+            int x1 = blocksize * path[i].x;
+            int x2 = blocksize * path[i+1].x;
+            int y1 = blocksize * path[i].y;
+            int y2 = blocksize * path[i+1].y;
+            int left, top, right, bottom;
+            if (x1 < x2) {
+                left = x1 - blocksize / 2;
+                right = x2 + blocksize / 2;
+            } else {
+                left = x1 + blocksize / 2;
+                right = x2 - blocksize / 2;
+            }
+            if (y1 < y2) {
+                top = y1 - blocksize / 2;
+                bottom = y2 + blocksize / 2;
+            } else {
+                top = y1 + blocksize / 2;
+                bottom = y2 - blocksize / 2;
+            }
+            int xOffset = blocksize / 2;
+            int yOffset = blocksize / 2;
+
+            Rect rect = new Rect(left + xOffset, top + yOffset + hudOffset.y, right + xOffset, bottom + yOffset + hudOffset.y);
+            paint.setColor(Color.argb(50, 255, 255, 150));
+            canvas.drawRect(rect, paint);
+        }
+        paint.setAlpha(255);
+
     }
 
     public void draw(Canvas canvas, Paint paint) {
+        drawPath(canvas, paint);
         // Draw the head
         switch (heading) {
             case RIGHT:
@@ -96,7 +143,7 @@ public class Enemy extends GameObject {
                         headLocation.x
                                 * blocksize,
                         headLocation.y
-                                * blocksize, paint);
+                                * blocksize + hudOffset.y, paint);
                 break;
 
             case LEFT:
@@ -104,7 +151,7 @@ public class Enemy extends GameObject {
                         headLocation.x
                                 * blocksize,
                         headLocation.y
-                                * blocksize, paint);
+                                * blocksize + hudOffset.y, paint);
                 break;
 
             case UP:
@@ -112,7 +159,7 @@ public class Enemy extends GameObject {
                         headLocation.x
                                 * blocksize,
                         headLocation.y
-                                * blocksize, paint);
+                                * blocksize + hudOffset.y, paint);
                 break;
 
             case DOWN:
@@ -120,40 +167,73 @@ public class Enemy extends GameObject {
                         headLocation.x
                                 * blocksize,
                         headLocation.y
-                                * blocksize, paint);
+                                * blocksize + hudOffset.y, paint);
                 break;
         }
     }
 
     public void reset(int w, int h) {
-
         // Reset the heading
         heading = Heading.RIGHT;
 
-        headLocation = new Point(new Point(w / 2, h / 2));
+        headLocation = new Point(w / 2, h / 2);
     }
 
     public void move() {
         Point p = headLocation;
+        followPath();
+
+
+
+    }
+//kekxd global
+    int currPathIndex = 0;
+
+    public void followPath() {
+
+        while (true) {
+            boolean getout = true;
+            if (currPathIndex >= path.length) return;
+            // thi shit aint work for daigon alley
+            int targetDirX = path[currPathIndex].x - headLocation.x;
+            int targetDirY = path[currPathIndex].y - headLocation.y;
+            System.out.println(targetDirX + " " + targetDirY);
+            //heading = Heading.LEFT;
+            // disgusting non safe coding try not to vomit
+            if (targetDirX > 0) {
+                heading = Heading.RIGHT;
+            } else if (targetDirX < 0) {
+                heading = Heading.LEFT;
+            } else if (targetDirY > 0) {
+                heading = Heading.DOWN;
+            } else if (targetDirY < 0) {
+                heading = Heading.UP;
+            } else if (targetDirX == 0 && targetDirY == 0) {
+                ++currPathIndex;
+                getout = false;
+            }
+            if (getout) break;
+        }
 
         // Move it appropriately
         switch (heading) {
             case UP:
-                p.y--;
+                headLocation.y--;
                 break;
 
             case RIGHT:
-                p.x++;
+                headLocation.x++;
                 break;
 
             case DOWN:
-                p.y++;
+                headLocation.y++;
                 break;
 
             case LEFT:
-                p.x--;
+                headLocation.x--;
                 break;
         }
+
     }
 
     // Handle changing direction
@@ -193,5 +273,8 @@ public class Enemy extends GameObject {
                     break;
             }
         }
+    }
+
+    public void spawn() {
     }
 }
