@@ -38,7 +38,7 @@ public class GameObject {
         mSpawnRange = new Point(NUM_BLOCKS_WIDE, mNumBlocksHigh);
 
         enemy = new Enemy(context, blockSize, new Point(50, 50));
-        tower = new DefenseTower(context, new Point(NUM_BLOCKS_WIDE*10, mNumBlocksHigh*10));
+        tower = new DefenseTower(context, new Point(NUM_BLOCKS_WIDE*10, mNumBlocksHigh*10), blockSize, enemy);
     }
 
     public void newGame() {
