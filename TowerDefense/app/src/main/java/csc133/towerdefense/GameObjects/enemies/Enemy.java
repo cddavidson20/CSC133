@@ -11,12 +11,11 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.MotionEvent;
 
-import csc133.towerdefense.GameObjects.GameObject;
 import csc133.towerdefense.R;
 
-public class Enemy extends GameObject {
+public class Enemy extends AbstractEnemy {
 
-    private Point headLocation;
+    public Point headLocation;
 
     private Point[] path;
 
@@ -33,13 +32,13 @@ public class Enemy extends GameObject {
     // Start by heading to the right
     private Heading heading = Heading.RIGHT;
 
-    private int blocksize;
+    private int blockSize;
     private int mNumBlocksHigh;
     private int halfWayPoint;
 
     public Enemy(Context context, int bs, Point mr) {
         super();
-        blocksize = bs;
+        blockSize = bs;
         // Create and scale the bitmaps
         mBitmapHeadRight = BitmapFactory
                 .decodeResource(context.getResources(),
@@ -62,7 +61,7 @@ public class Enemy extends GameObject {
         // in the correct direction
         mBitmapHeadRight = Bitmap
                 .createScaledBitmap(mBitmapHeadRight,
-                        blocksize, blocksize, false);
+                        blockSize, blockSize, false);
 
         // A matrix for scaling
         Matrix matrix = new Matrix();
@@ -70,25 +69,25 @@ public class Enemy extends GameObject {
 
         mBitmapHeadLeft = Bitmap
                 .createBitmap(mBitmapHeadRight,
-                        0, 0, blocksize, blocksize, matrix, true);
+                        0, 0, blockSize, blockSize, matrix, true);
 
         // A matrix for rotating
         matrix.preRotate(-90);
         mBitmapHeadUp = Bitmap
                 .createBitmap(mBitmapHeadRight,
-                        0, 0, blocksize, blocksize, matrix, true);
+                        0, 0, blockSize, blockSize, matrix, true);
 
         // Matrix operations are cumulative
         // so rotate by 180 to face down
         matrix.preRotate(180);
         mBitmapHeadDown = Bitmap
                 .createBitmap(mBitmapHeadRight,
-                        0, 0, blocksize, blocksize, matrix, true);
+                        0, 0, blockSize, blockSize, matrix, true);
 
         // How many blocks of the same size will fit into the height
-        mNumBlocksHigh = mr.y / blocksize;
-        halfWayPoint = mr.x * blocksize / 2;
-        hudOffset = new Point(0, (int)(2.5 * blocksize));
+        mNumBlocksHigh = mr.y / blockSize;
+        halfWayPoint = mr.x * blockSize / 2;
+        hudOffset = new Point(0, (int)(2.5 * blockSize));
 
         path = new Point[] {
                 new Point(0, 0),
@@ -104,27 +103,27 @@ public class Enemy extends GameObject {
     public void drawPath(Canvas canvas, Paint paint) {
         //riksy coding only
         for (int i = 0; i < path.length - 1; ++i) {
-            int x1 = blocksize * path[i].x;
-            int x2 = blocksize * path[i+1].x;
-            int y1 = blocksize * path[i].y;
-            int y2 = blocksize * path[i+1].y;
+            int x1 = blockSize * path[i].x;
+            int x2 = blockSize * path[i+1].x;
+            int y1 = blockSize * path[i].y;
+            int y2 = blockSize * path[i+1].y;
             int left, top, right, bottom;
             if (x1 < x2) {
-                left = x1 - blocksize / 2;
-                right = x2 + blocksize / 2;
+                left = x1 - blockSize / 2;
+                right = x2 + blockSize / 2;
             } else {
-                left = x1 + blocksize / 2;
-                right = x2 - blocksize / 2;
+                left = x1 + blockSize / 2;
+                right = x2 - blockSize / 2;
             }
             if (y1 < y2) {
-                top = y1 - blocksize / 2;
-                bottom = y2 + blocksize / 2;
+                top = y1 - blockSize / 2;
+                bottom = y2 + blockSize / 2;
             } else {
-                top = y1 + blocksize / 2;
-                bottom = y2 - blocksize / 2;
+                top = y1 + blockSize / 2;
+                bottom = y2 - blockSize / 2;
             }
-            int xOffset = blocksize / 2;
-            int yOffset = blocksize / 2;
+            int xOffset = blockSize / 2;
+            int yOffset = blockSize / 2;
 
             Rect rect = new Rect(left + xOffset, top + yOffset + hudOffset.y, right + xOffset, bottom + yOffset + hudOffset.y);
             paint.setColor(Color.argb(50, 255, 255, 150));
@@ -141,33 +140,33 @@ public class Enemy extends GameObject {
             case RIGHT:
                 canvas.drawBitmap(mBitmapHeadRight,
                         headLocation.x
-                                * blocksize,
+                                * blockSize,
                         headLocation.y
-                                * blocksize + hudOffset.y, paint);
+                                * blockSize + hudOffset.y, paint);
                 break;
 
             case LEFT:
                 canvas.drawBitmap(mBitmapHeadLeft,
                         headLocation.x
-                                * blocksize,
+                                * blockSize,
                         headLocation.y
-                                * blocksize + hudOffset.y, paint);
+                                * blockSize + hudOffset.y, paint);
                 break;
 
             case UP:
                 canvas.drawBitmap(mBitmapHeadUp,
                         headLocation.x
-                                * blocksize,
+                                * blockSize,
                         headLocation.y
-                                * blocksize + hudOffset.y, paint);
+                                * blockSize + hudOffset.y, paint);
                 break;
 
             case DOWN:
                 canvas.drawBitmap(mBitmapHeadDown,
                         headLocation.x
-                                * blocksize,
+                                * blockSize,
                         headLocation.y
-                                * blocksize + hudOffset.y, paint);
+                                * blockSize + hudOffset.y, paint);
                 break;
         }
     }
@@ -180,10 +179,7 @@ public class Enemy extends GameObject {
     }
 
     public void move() {
-        Point p = headLocation;
         followPath();
-
-
 
     }
 //kekxd global
