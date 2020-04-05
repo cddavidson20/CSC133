@@ -11,18 +11,21 @@ import java.util.ArrayList;
 class HUD {
     private static ArrayList<Rect> controls;
     private int mTextFormatting;
+    private int mHUDText;
     private int mScreenHeight;
     private int mScreenWidth;
 
     private Rect baseHUD;
 
     static int PAUSE = 0;
-    static int TOWER = 0;
+    static int RESET = 1;
+    static int TOWER = 2;
 
     HUD(Point size){
         mScreenHeight = size.y;
         mScreenWidth = size.x;
         mTextFormatting = size.x / 50;
+        mHUDText = size.x / 70;
 
         prepareControls();
     }
@@ -39,10 +42,12 @@ class HUD {
                 buttonHeight);
 
         Rect pause = new Rect(buttonPadding, 0, buttonWidth, buttonHeight);
-        Rect tower = new Rect(buttonPadding, 0, buttonWidth, buttonHeight);
+        Rect reset = new Rect(pause.right + buttonPadding, 0, pause.right + buttonWidth, buttonHeight);
+        Rect tower = new Rect(reset.right + buttonPadding, 0, reset.right + buttonWidth, buttonHeight);
 
         controls = new ArrayList<>();
         controls.add(PAUSE, pause);
+        controls.add(RESET, reset);
         controls.add(TOWER, tower);
     }
 
@@ -72,6 +77,16 @@ class HUD {
         for(Rect r : controls){
             c.drawRect(r.left, r.top, r.right, r.bottom, p);
         }
+
+        p.setColor(Color.argb(225,0,0,0));
+        p.setTextSize(mHUDText);
+        c.drawText("PAUSE", controls.get(PAUSE).right / 3.6f,
+                controls.get(PAUSE).bottom / 1.6f, p);
+        c.drawText("RESET", controls.get(RESET).right - (controls.get(RESET).left / 1.6f),
+                (controls.get(RESET).top + controls.get(RESET).bottom / 1.6f) , p);
+        c.drawText("TOWER", controls.get(TOWER).right - (controls.get(TOWER).left / 3.0f),
+                   (controls.get(TOWER).top + controls.get(TOWER).bottom / 1.6f) , p);
+
 
         // Set the colors back
         p.setColor(Color.argb(255,255,255,255));

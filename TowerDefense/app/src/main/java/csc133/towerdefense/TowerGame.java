@@ -12,9 +12,8 @@ import android.view.SurfaceView;
 import java.util.ArrayList;
 
 import csc133.towerdefense.GameObjects.GameObject;
-import csc133.towerdefense.HUD;
 
-public class TowerGame extends SurfaceView implements Runnable, GameEngineBroadcaster{
+public class TowerGame extends SurfaceView implements Runnable, GameEngineBroadcaster {
 
     // Objects for the game loop/thread
     private Thread mThread = null;
@@ -153,26 +152,19 @@ public class TowerGame extends SurfaceView implements Runnable, GameEngineBroadc
 
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
-        switch (motionEvent.getAction() & MotionEvent.ACTION_MASK) {
-            case MotionEvent.ACTION_UP:
-                if (gameState.getPaused()) {
-                    gameState.startNewGame();
+        final int actionPreformed = motionEvent.getAction();
 
-                    // Don't want to process snake direction for this tap
-                    return true;
-                }
+        switch(actionPreformed){
+            case MotionEvent.ACTION_MOVE:
+            case MotionEvent.ACTION_DOWN:
                 for (InputObserver o : inputObservers) {
-                    o.handleInput(motionEvent, gameState, HUD.getControls());
+                    o.handleInput(motionEvent, gameState, gameObjects, HUD.getControls());
+                    break;
                 }
-
-                // Let the Snake class handle the input
-                gameObjects.switchHeading(motionEvent);
-                break;
-
             default:
                 break;
-
         }
+
         return true;
     }
 }

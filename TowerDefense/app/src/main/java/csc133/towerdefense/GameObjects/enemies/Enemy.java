@@ -36,6 +36,8 @@ public class Enemy extends AbstractEnemy {
     private int mNumBlocksHigh;
     private int halfWayPoint;
 
+    private Point hudOffset;
+
     public Enemy(Context context, int bs, Point mr) {
         super();
         blockSize = bs;
@@ -98,9 +100,7 @@ public class Enemy extends AbstractEnemy {
         headLocation = new Point(path[0].x, path[0].y);
     }
 
-    private Point hudOffset;
-
-    public void drawPath(Canvas canvas, Paint paint) {
+    private void drawPath(Canvas canvas, Paint paint) {
         //riksy coding only
         for (int i = 0; i < path.length - 1; ++i) {
             int x1 = blockSize * path[i].x;
@@ -174,13 +174,11 @@ public class Enemy extends AbstractEnemy {
     public void reset(int w, int h) {
         // Reset the heading
         heading = Heading.RIGHT;
-
-        headLocation = new Point(w / 2, h / 2);
+        headLocation = new Point(path[0].x, path[0].y);
     }
 
     public void move() {
         followPath();
-
     }
 //kekxd global
     int currPathIndex = 0;
@@ -269,8 +267,5 @@ public class Enemy extends AbstractEnemy {
                     break;
             }
         }
-    }
-
-    public void spawn() {
     }
 }
