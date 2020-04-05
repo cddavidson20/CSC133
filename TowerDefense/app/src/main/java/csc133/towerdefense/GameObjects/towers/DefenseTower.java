@@ -15,23 +15,31 @@ import csc133.towerdefense.R;
 public class DefenseTower extends AbstractTower {
 
     private Bitmap bitmap;
-    private int positionX;
-    private int positionY;
-    private int blockSize;
     private Enemy enemy;
+    private Rect range;
+    private int blockSize;
+
+    private final Point sizeOfDefenseTowerImage = new Point(27,27);
+    private Point centerOfTowerImage;
 
 
     public DefenseTower() {
         super();
     }
 
-    public DefenseTower(Context context, Point position, int blockSize, Enemy enemy) {
+    public DefenseTower(Context context, Point position, Enemy enemy, int bs) {
         super(context, position);
-        this.blockSize = blockSize;
         this.enemy = enemy;
-        positionX = position.x;
-        positionY = position.y;
+        this.blockSize = bs;
+        int positionX = position.x;
+        int positionY = position.y;
+        int offsetX = (positionX - sizeOfDefenseTowerImage.x /2);
+        int offsetY = (positionY - sizeOfDefenseTowerImage.y /2);
+        centerOfTowerImage = new Point(offsetX, offsetY);
 
+        range = new Rect(centerOfTowerImage.x - 100, centerOfTowerImage.y - 100,
+                centerOfTowerImage.x + 100, centerOfTowerImage.y + 100
+        );
 
         bitmap = BitmapFactory
                 .decodeResource(context.getResources(),
@@ -40,31 +48,23 @@ public class DefenseTower extends AbstractTower {
 
     public void draw(Canvas canvas, Paint paint) {
         range(canvas, paint);
-        canvas.drawBitmap(bitmap, positionX, positionY, paint);
+        canvas.drawBitmap(bitmap, centerOfTowerImage.x - sizeOfDefenseTowerImage.x,
+                        centerOfTowerImage.y - sizeOfDefenseTowerImage.y, paint);
     }
 
-    public void range(Canvas canvas, Paint paint) {
-        Rect rect = new Rect(positionX / 2, positionY / 2,
-                positionX + 250, positionY + 250
-        );
+    private void range(Canvas canvas, Paint paint) {
         if (enemyInRange()) {
             paint.setColor(Color.argb(50, 255, 0, 0));
         } else {
             paint.setColor(Color.argb(50, 255, 255, 255));
         }
-        canvas.drawRect(rect, paint);
+        canvas.drawRect(range, paint);
         paint.setAlpha(255);
     }
 
+    //change headLocation to pixels
     private boolean enemyInRange() {
-        int left = positionX / (blockSize * 2);
-        int right = (positionX + 250) / blockSize;
-
-        if ((enemy.headLocation.x >=  left) && (enemy.headLocation.x <=  right)) {
-            return true;
-        } else {
-            return false;
-        }
+        return range.contains((enemy.headLocation.x * blockSize) ,
+                              (enemy.headLocation.y * blockSize + (int)(blockSize * 2.5)) );
     }
-
 }

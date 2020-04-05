@@ -7,9 +7,9 @@ import android.graphics.Point;
 
 public abstract class AbstractTower {
 
-    public AbstractTower() {}
+    AbstractTower() {}
 
-    public AbstractTower(Context context, Point position) {}
+    AbstractTower(Context context, Point position) {}
 
     public void draw(Canvas canvas, Paint paint){}
 }

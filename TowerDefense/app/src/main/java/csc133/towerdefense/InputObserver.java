@@ -5,7 +5,9 @@ import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
-interface InputObserver {
+import csc133.towerdefense.GameObjects.GameObject;
 
-    void handleInput(MotionEvent event, GameState gs, ArrayList<Rect> controls);
+public interface InputObserver {
+
+    void handleInput(MotionEvent event, GameState gs, GameObject go, ArrayList<Rect> controls);
 }
