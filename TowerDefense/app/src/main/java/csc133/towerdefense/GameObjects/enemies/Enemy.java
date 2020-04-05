@@ -9,7 +9,6 @@ import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.view.MotionEvent;
 
 import csc133.towerdefense.R;
 
@@ -33,8 +32,7 @@ public class Enemy extends AbstractEnemy {
     private Heading heading = Heading.RIGHT;
 
     private int blockSize;
-    private int mNumBlocksHigh;
-    private int halfWayPoint;
+    private int currPathIndex = 0;
 
     private Point hudOffset;
 
@@ -87,8 +85,8 @@ public class Enemy extends AbstractEnemy {
                         0, 0, blockSize, blockSize, matrix, true);
 
         // How many blocks of the same size will fit into the height
-        mNumBlocksHigh = mr.y / blockSize;
-        halfWayPoint = mr.x * blockSize / 2;
+        int mNumBlocksHigh = mr.y / blockSize;
+        int halfWayPoint = mr.x * blockSize / 2;
         hudOffset = new Point(0, (int)(2.5 * blockSize));
 
         path = new Point[] {
@@ -101,7 +99,7 @@ public class Enemy extends AbstractEnemy {
     }
 
     private void drawPath(Canvas canvas, Paint paint) {
-        //riksy coding only
+
         for (int i = 0; i < path.length - 1; ++i) {
             int x1 = blockSize * path[i].x;
             int x2 = blockSize * path[i+1].x;
@@ -174,26 +172,22 @@ public class Enemy extends AbstractEnemy {
     public void reset(int w, int h) {
         // Reset the heading
         heading = Heading.RIGHT;
+        currPathIndex = 0;
         headLocation = new Point(path[0].x, path[0].y);
     }
 
     public void move() {
         followPath();
     }
-//kekxd global
-    int currPathIndex = 0;
 
     public void followPath() {
 
         while (true) {
             boolean getout = true;
             if (currPathIndex >= path.length) return;
-            // thi shit aint work for daigon alley
+
             int targetDirX = path[currPathIndex].x - headLocation.x;
             int targetDirY = path[currPathIndex].y - headLocation.y;
-            System.out.println(targetDirX + " " + targetDirY);
-            //heading = Heading.LEFT;
-            // disgusting non safe coding try not to vomit
             if (targetDirX > 0) {
                 heading = Heading.RIGHT;
             } else if (targetDirX < 0) {
@@ -228,44 +222,5 @@ public class Enemy extends AbstractEnemy {
                 break;
         }
 
-    }
-
-    // Handle changing direction
-    public void switchHeading(MotionEvent motionEvent) {
-
-        // Is the tap on the right hand side?
-        if (motionEvent.getX() >= halfWayPoint) {
-            switch (heading) {
-                // Rotate right
-                case UP:
-                    heading = Heading.RIGHT;
-                    break;
-                case RIGHT:
-                    heading = Heading.DOWN;
-                    break;
-                case DOWN:
-                    heading = Heading.LEFT;
-                    break;
-                case LEFT:
-                    heading = Heading.UP;
-                    break;
-            }
-        } else {
-            // Rotate left
-            switch (heading) {
-                case UP:
-                    heading = Heading.LEFT;
-                    break;
-                case LEFT:
-                    heading = Heading.DOWN;
-                    break;
-                case DOWN:
-                    heading = Heading.RIGHT;
-                    break;
-                case RIGHT:
-                    heading = Heading.UP;
-                    break;
-            }
-        }
     }
 }

@@ -1,12 +1,9 @@
 package csc133.towerdefense.GameObjects;
 
-import android.app.VoiceInteractor;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.Rect;
-import android.view.MotionEvent;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
@@ -14,12 +11,8 @@ import java.util.ArrayList;
 import csc133.towerdefense.GameObjects.enemies.Enemy;
 import csc133.towerdefense.GameObjects.towers.AbstractTower;
 import csc133.towerdefense.GameObjects.towers.DefenseTower;
-import csc133.towerdefense.InputObserver;
-import csc133.towerdefense.TowerGame;
 
 public class GameObject extends SurfaceView {
-
-    private Point mSpawnRange;
 
     private Context context;
     private int blockSize;
@@ -39,9 +32,6 @@ public class GameObject extends SurfaceView {
         this.blockSize = size.x / NUM_BLOCKS_WIDE;
         // How many blocks of the same size will fit into the height
         mNumBlocksHigh = size.y / blockSize;
-
-
-        mSpawnRange = new Point(NUM_BLOCKS_WIDE, mNumBlocksHigh);
 
         towers = new ArrayList<>();
 
@@ -67,10 +57,5 @@ public class GameObject extends SurfaceView {
     public void newTowerLocation(int x, int y) {
        towers.add(new DefenseTower(context, new Point(x, y),enemy, blockSize));
     }
-
-    public void switchHeading(MotionEvent motionEvent) {
-        enemy.switchHeading(motionEvent);
-    }
-
 
 }
