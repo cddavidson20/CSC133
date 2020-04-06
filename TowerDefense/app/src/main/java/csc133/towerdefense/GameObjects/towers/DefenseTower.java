@@ -48,6 +48,7 @@ public class DefenseTower extends AbstractTower {
 
     public void draw(Canvas canvas, Paint paint) {
         range(canvas, paint);
+        shoot(canvas, paint);
         canvas.drawBitmap(bitmap, centerOfTowerImage.x - sizeOfDefenseTowerImage.x,
                         centerOfTowerImage.y - sizeOfDefenseTowerImage.y, paint);
     }
@@ -55,11 +56,21 @@ public class DefenseTower extends AbstractTower {
     private void range(Canvas canvas, Paint paint) {
         if (enemyInRange()) {
             paint.setColor(Color.argb(50, 255, 0, 0));
+            canvas.drawRect(range, paint);
         } else {
             paint.setColor(Color.argb(50, 255, 255, 255));
         }
         canvas.drawRect(range, paint);
         paint.setAlpha(255);
+    }
+
+    private void shoot(Canvas canvas, Paint paint) {
+        if (enemyInRange()) {
+            paint.setColor(Color.rgb(255, 255, 0));
+            canvas.drawLine(centerOfTowerImage.x, centerOfTowerImage.y,
+                    enemy.headLocation.x * blockSize,
+                    enemy.headLocation.y * blockSize + (int)(blockSize * 2.5), paint);
+        }
     }
 
     //change headLocation to pixels
