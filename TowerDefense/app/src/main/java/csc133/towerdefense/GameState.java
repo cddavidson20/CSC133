@@ -9,7 +9,6 @@ final class GameState {
     private static volatile boolean mGameOver = true;
     private static volatile boolean mDrawing = false;
 
-
     // This is how we will make all the high scores persist
     private SharedPreferences.Editor mEditor;
 
@@ -33,7 +32,7 @@ final class GameState {
     }
 
     void startNewGame(){
-        // Don'mTransform want to be drawing objects while deSpawnReSpawn is
+        // Don't want to be drawing objects while deSpawnReSpawn is
         // clearing ArrayList and filling it up again
         stopDrawing();
         resume();

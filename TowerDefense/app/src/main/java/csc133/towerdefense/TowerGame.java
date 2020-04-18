@@ -12,6 +12,7 @@ import android.view.SurfaceView;
 import java.util.ArrayList;
 
 import csc133.towerdefense.GameObjects.GameObject;
+import csc133.towerdefense.GameObjects.enemies.Enemy;
 
 public class TowerGame extends SurfaceView implements Runnable, GameEngineBroadcaster {
 
@@ -137,7 +138,6 @@ public class TowerGame extends SurfaceView implements Runnable, GameEngineBroadc
             System.out.println("Pause Error");
         }
     }
-
 
     // Start the thread
     public void resume() {
