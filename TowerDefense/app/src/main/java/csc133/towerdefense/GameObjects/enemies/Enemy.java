@@ -4,17 +4,19 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.Paint;
-import android.graphics.Rect;
 
+import csc133.towerdefense.GameObjects.GameObject;
+import csc133.towerdefense.GameState;
 import csc133.towerdefense.R;
 
 public class Enemy extends AbstractEnemy {
 
     public Point headLocation;
+    private int health = 100;
+    private int deadGold = 100;
 
     private Point[] path;
 
@@ -35,10 +37,14 @@ public class Enemy extends AbstractEnemy {
     private int currPathIndex = 0;
 
     private Point hudOffset;
+    private GameState gameState;
+    private GameObject gameObject;
 
-    public Enemy(Context context, int bs, Point mr) {
+    public Enemy(Context context, GameObject gameObject, GameState gameState, int bs, Point mr) {
         super();
         blockSize = bs;
+        this.gameState = gameState;
+        this.gameObject = gameObject;
         // Create and scale the bitmaps
         mBitmapHeadRight = BitmapFactory
                 .decodeResource(context.getResources(),
@@ -98,41 +104,7 @@ public class Enemy extends AbstractEnemy {
         headLocation = new Point(path[0].x, path[0].y);
     }
 
-    private void drawPath(Canvas canvas, Paint paint) {
-
-        for (int i = 0; i < path.length - 1; ++i) {
-            int x1 = blockSize * path[i].x;
-            int x2 = blockSize * path[i+1].x;
-            int y1 = blockSize * path[i].y;
-            int y2 = blockSize * path[i+1].y;
-            int left, top, right, bottom;
-            if (x1 < x2) {
-                left = x1 - blockSize / 2;
-                right = x2 + blockSize / 2;
-            } else {
-                left = x1 + blockSize / 2;
-                right = x2 - blockSize / 2;
-            }
-            if (y1 < y2) {
-                top = y1 - blockSize / 2;
-                bottom = y2 + blockSize / 2;
-            } else {
-                top = y1 + blockSize / 2;
-                bottom = y2 - blockSize / 2;
-            }
-            int xOffset = blockSize / 2;
-            int yOffset = blockSize / 2;
-
-            Rect rect = new Rect(left + xOffset, top + yOffset + hudOffset.y, right + xOffset, bottom + yOffset + hudOffset.y);
-            paint.setColor(Color.argb(50, 255, 255, 150));
-            canvas.drawRect(rect, paint);
-        }
-        paint.setAlpha(255);
-
-    }
-
     public void draw(Canvas canvas, Paint paint) {
-        drawPath(canvas, paint);
         // Draw the head
         switch (heading) {
             case RIGHT:
@@ -180,7 +152,7 @@ public class Enemy extends AbstractEnemy {
         followPath();
     }
 
-    public void followPath() {
+    private void followPath() {
 
         while (true) {
             boolean getout = true;
@@ -222,5 +194,17 @@ public class Enemy extends AbstractEnemy {
                 break;
         }
 
+    }
+
+    public void enemyShot(int healthTaken, int indexOfEnemy) {
+        health -= healthTaken;
+        if (health <= 0) {
+            gameState.gainedGold(100);
+            gameObject.enemyDead(indexOfEnemy);
+        }
+    }
+
+    public void enemyReachedBase(int indexOfEnemy) {
+        gameObject.enemyReachedBase(indexOfEnemy);
     }
 }
