@@ -21,7 +21,7 @@ class HUD {
     static int RESET = 1;
     static int TOWER = 2;
 
-    HUD(Point size){
+    HUD(Point size) {
         mScreenHeight = size.y;
         mScreenWidth = size.x;
         mTextFormatting = size.x / 50;
@@ -30,7 +30,7 @@ class HUD {
         prepareControls();
     }
 
-    private void prepareControls(){
+    private void prepareControls() {
         int buttonWidth = mScreenWidth / 14;
         int buttonHeight = mScreenHeight / 12;
         int buttonPadding = mScreenWidth / 90;
@@ -51,30 +51,34 @@ class HUD {
         controls.add(TOWER, tower);
     }
 
-    void draw(Canvas c, Paint p, GameState gs){
+    void draw(Canvas c, Paint p, GameState gs) {
 
         // Draw the HUD
         p.setColor(Color.argb(255,255,255,255));
         p.setTextSize(mTextFormatting);
+        c.drawText("Wave: " + gs.getWave(), mScreenWidth - (mScreenWidth/10), mScreenHeight/30, p);
+        c.drawText("Gold: " + gs.getGold(), mScreenWidth - (mScreenWidth/10), mScreenHeight/14, p);
+        c.drawText("Lives: " + gs.getLives(), mScreenWidth - (mScreenWidth/5), mScreenHeight/30, p);
 
-        if(gs.getGameOver()){
+        if(gs.getGameOver()) {
             p.setTextSize(mTextFormatting * 5);
             c.drawText("PRESS PLAY", mScreenWidth /4, mScreenHeight /2 ,p);
         }
 
-        if(gs.getPaused() && !gs.getGameOver()){
+        if(gs.getPaused() && !gs.getGameOver()) {
             p.setTextSize(mTextFormatting * 5);
             c.drawText("PAUSED", mScreenWidth /3, mScreenHeight /2 ,p);
         }
+
         drawHUD(c, p);
     }
 
-    private void drawHUD(Canvas c, Paint p){
+    private void drawHUD(Canvas c, Paint p) {
         p.setColor(Color.argb(100,255,255,255));
         c.drawRect(baseHUD, p);
 
         p.setColor(Color.argb(100,64,64,64));
-        for(Rect r : controls){
+        for(Rect r : controls) {
             c.drawRect(r.left, r.top, r.right, r.bottom, p);
         }
 
@@ -92,7 +96,7 @@ class HUD {
         p.setColor(Color.argb(255,255,255,255));
     }
 
-    static ArrayList<Rect> getControls(){
+    static ArrayList<Rect> getControls() {
         return controls;
     }
 }

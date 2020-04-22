@@ -9,27 +9,31 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 
+import java.util.ArrayList;
+
 import csc133.towerdefense.GameObjects.enemies.Enemy;
 import csc133.towerdefense.R;
 
 public class DefenseTower extends AbstractTower {
 
     private Bitmap bitmap;
-    private Enemy enemy;
+    private ArrayList<Enemy> enemies;
     private Rect range;
     private int blockSize;
 
     private final Point sizeOfDefenseTowerImage = new Point(27,27);
     private Point centerOfTowerImage;
+    private static int defenceTowerCost = 100;
+    private static int damagePerShot = 3;
 
 
     public DefenseTower() {
         super();
     }
 
-    public DefenseTower(Context context, Point position, Enemy enemy, int bs) {
+    public DefenseTower(Context context, Point position, ArrayList<Enemy> enemies, int bs) {
         super(context, position);
-        this.enemy = enemy;
+        this.enemies = enemies;
         this.blockSize = bs;
         int positionX = position.x;
         int positionY = position.y;
@@ -46,36 +50,42 @@ public class DefenseTower extends AbstractTower {
                         R.drawable.defense_tower);
     }
 
+    public static int cost() {
+        return defenceTowerCost;
+    }
+
     public void draw(Canvas canvas, Paint paint) {
-        range(canvas, paint);
         shoot(canvas, paint);
         canvas.drawBitmap(bitmap, centerOfTowerImage.x - sizeOfDefenseTowerImage.x,
                         centerOfTowerImage.y - sizeOfDefenseTowerImage.y, paint);
     }
 
-    private void range(Canvas canvas, Paint paint) {
-        if (enemyInRange()) {
-            paint.setColor(Color.argb(50, 255, 0, 0));
-            canvas.drawRect(range, paint);
-        } else {
-            paint.setColor(Color.argb(50, 255, 255, 255));
-        }
-        canvas.drawRect(range, paint);
-        paint.setAlpha(255);
-    }
-
     private void shoot(Canvas canvas, Paint paint) {
-        if (enemyInRange()) {
-            paint.setColor(Color.rgb(255, 255, 0));
-            canvas.drawLine(centerOfTowerImage.x, centerOfTowerImage.y,
-                    enemy.headLocation.x * blockSize,
-                    enemy.headLocation.y * blockSize + (int)(blockSize * 2.5), paint);
+        for (int i = enemies.size() -1; i >=0; i--) {
+            Enemy enemy = enemies.get(i);
+            if (enemyInRange(enemy)) {
+                paint.setColor(Color.argb(50, 255, 0, 0));
+                canvas.drawRect(range, paint);
+                paint.setColor(Color.rgb(255, 255, 0));
+                canvas.drawLine(centerOfTowerImage.x, centerOfTowerImage.y,
+                        enemy.headLocation.x * blockSize,
+                        enemy.headLocation.y * blockSize + (int) (blockSize * 2.5), paint);
+                enemy.enemyShot(damagePerShot, i);
+            } else {
+                paint.setColor(Color.argb(50, 255, 255, 255));
+                canvas.drawRect(range, paint);
+                paint.setAlpha(255);
+            }
         }
     }
 
-    //change headLocation to pixels
-    private boolean enemyInRange() {
-        return range.contains((enemy.headLocation.x * blockSize) ,
-                              (enemy.headLocation.y * blockSize + (int)(blockSize * 2.5)) );
+    //check if an enemy is in range
+    private boolean enemyInRange(Enemy enemy) {
+            return range.contains((enemy.headLocation.x * blockSize),
+                    (enemy.headLocation.y * blockSize + (int) (blockSize * 2.5)));
+    }
+
+    public Rect rangeOfTower() {
+        return range;
     }
 }

@@ -11,5 +11,5 @@ public abstract class AbstractTower {
 
     AbstractTower(Context context, Point position) {}
 
-    public void draw(Canvas canvas, Paint paint){}
+    public abstract void draw(Canvas canvas, Paint paint);
 }

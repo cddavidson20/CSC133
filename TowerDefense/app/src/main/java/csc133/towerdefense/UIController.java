@@ -7,6 +7,7 @@ import android.view.MotionEvent;
 import java.util.ArrayList;
 
 import csc133.towerdefense.GameObjects.*;
+import csc133.towerdefense.GameObjects.towers.DefenseTower;
 
 class UIController implements InputObserver {
 
@@ -16,7 +17,7 @@ class UIController implements InputObserver {
     private float lastXAxis = 0f;
     private float lastYAxis = 0f;
 
-    UIController(GameEngineBroadcaster b){
+    UIController(GameEngineBroadcaster b) {
         b.addObserver(this);
     }
 
@@ -32,7 +33,11 @@ class UIController implements InputObserver {
                 final float y = event.getY();
                 if (lastXAxis != 0f && lastYAxis != 0f) {
                     if (buttons.get(HUD.TOWER).contains((int) lastXAxis, (int) lastYAxis)) {
-                        towerPressed(gameObject, x, y);
+                        if (gameState.getGold() >= 100) {
+                            towerPressed(gameObject, x, y);
+                        } else {
+                            System.out.println("Not enough gold for defence tower");
+                        }
                     }
                 }
 
@@ -72,11 +77,11 @@ class UIController implements InputObserver {
         if (!gameState.getPaused()) {
             // Pause the game
             gameState.pause();
+            gameState.passedWave();
         }
 
         // If game is over start a new game
         else if (gameState.getGameOver()) {
-
             gameState.startNewGame();
         }
 

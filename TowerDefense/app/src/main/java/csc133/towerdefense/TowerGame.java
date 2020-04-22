@@ -46,7 +46,7 @@ public class TowerGame extends SurfaceView implements Runnable, GameEngineBroadc
         mPaint = new Paint();
         gameState = new GameState(context);
         hud = new HUD(size);
-        gameObjects = new GameObject(context, size);
+        gameObjects = new GameObject(context, gameState, size);
 
         mBitMapName = "background";
         background = new Background();
@@ -54,7 +54,7 @@ public class TowerGame extends SurfaceView implements Runnable, GameEngineBroadc
 
     }
 
-    public void draw(){
+    public void draw() {
         if (mSurfaceHolder.getSurface().isValid()) {
             mCanvas = mSurfaceHolder.lockCanvas();
 
@@ -91,9 +91,11 @@ public class TowerGame extends SurfaceView implements Runnable, GameEngineBroadc
         while (gameState.getThreadRunning()) {
             if (!gameState.getPaused()) {
                 // Update 10 times a second
-                if (updateRequired()) {
-                    update();
+                if (gameObjects.spawnWave) {
+                    gameObjects.spawnWave();
                 }
+                if (updateRequired())
+                    update();
             }
 
            draw();
@@ -101,7 +103,7 @@ public class TowerGame extends SurfaceView implements Runnable, GameEngineBroadc
     }
 
     public void update() {
-        gameObjects.update();
+        gameObjects.update(mCanvas, mPaint);
     }
 
     // Check to see if it is time for an update
@@ -154,7 +156,7 @@ public class TowerGame extends SurfaceView implements Runnable, GameEngineBroadc
     public boolean onTouchEvent(MotionEvent motionEvent) {
         final int actionPreformed = motionEvent.getAction();
 
-        switch(actionPreformed){
+        switch(actionPreformed) {
             case MotionEvent.ACTION_MOVE:
             case MotionEvent.ACTION_DOWN:
                 for (InputObserver o : inputObservers) {
