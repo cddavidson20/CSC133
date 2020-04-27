@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
+
 import java.util.ArrayList;
 
 public class Path {
@@ -17,14 +18,14 @@ public class Path {
     public Path(int blockSize) {
 
         this.blockSize = blockSize;
-        path = new Point[] {
+        path = new Point[]{
                 new Point(0, 0),
                 new Point(25, 0),
                 new Point(25, 15),
                 new Point(50, 15)
         };
 
-        hudOffset = new Point(0, (int)(2.5 * blockSize));
+        hudOffset = new Point(0, (int) (2.5 * blockSize));
         rectPath = new ArrayList<>();
     }
 
@@ -68,9 +69,9 @@ public class Path {
     }
 
     public boolean hittingPath(Point p) {
-        Point sizeOfDefenseTowerImage = new Point(27,27);
-        int offsetX = (p.x - sizeOfDefenseTowerImage.x /2);
-        int offsetY = (p.y - sizeOfDefenseTowerImage.y /2);
+        Point sizeOfDefenseTowerImage = new Point(27, 27);
+        int offsetX = (p.x - sizeOfDefenseTowerImage.x / 2);
+        int offsetY = (p.y - sizeOfDefenseTowerImage.y / 2);
 
         if (!rectPath.isEmpty()) {
             for (Rect rect : rectPath) {

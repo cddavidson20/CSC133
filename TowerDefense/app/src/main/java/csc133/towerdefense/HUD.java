@@ -54,46 +54,46 @@ class HUD {
     void draw(Canvas c, Paint p, GameState gs) {
 
         // Draw the HUD
-        p.setColor(Color.argb(255,255,255,255));
+        p.setColor(Color.argb(255, 255, 255, 255));
         p.setTextSize(mTextFormatting);
-        c.drawText("Wave: " + gs.getWave(), mScreenWidth - (mScreenWidth/10), mScreenHeight/30, p);
-        c.drawText("Gold: " + gs.getGold(), mScreenWidth - (mScreenWidth/10), mScreenHeight/14, p);
-        c.drawText("Lives: " + gs.getLives(), mScreenWidth - (mScreenWidth/5), mScreenHeight/30, p);
+        c.drawText("Wave: " + gs.getWave(), mScreenWidth - (mScreenWidth / 10), mScreenHeight / 30, p);
+        c.drawText("Gold: " + gs.getGold(), mScreenWidth - (mScreenWidth / 10), mScreenHeight / 14, p);
+        c.drawText("Lives: " + gs.getLives(), mScreenWidth - (mScreenWidth / 5), mScreenHeight / 30, p);
 
-        if(gs.getGameOver()) {
+        if (gs.getGameOver()) {
             p.setTextSize(mTextFormatting * 5);
-            c.drawText("PRESS PLAY", mScreenWidth /4, mScreenHeight /2 ,p);
+            c.drawText("PRESS PLAY", mScreenWidth / 4, mScreenHeight / 2, p);
         }
 
-        if(gs.getPaused() && !gs.getGameOver()) {
+        if (gs.getPaused() && !gs.getGameOver()) {
             p.setTextSize(mTextFormatting * 5);
-            c.drawText("PAUSED", mScreenWidth /3, mScreenHeight /2 ,p);
+            c.drawText("PAUSED", mScreenWidth / 3, mScreenHeight / 2, p);
         }
 
         drawHUD(c, p);
     }
 
     private void drawHUD(Canvas c, Paint p) {
-        p.setColor(Color.argb(100,255,255,255));
+        p.setColor(Color.argb(100, 255, 255, 255));
         c.drawRect(baseHUD, p);
 
-        p.setColor(Color.argb(100,64,64,64));
-        for(Rect r : controls) {
+        p.setColor(Color.argb(100, 64, 64, 64));
+        for (Rect r : controls) {
             c.drawRect(r.left, r.top, r.right, r.bottom, p);
         }
 
-        p.setColor(Color.argb(225,0,0,0));
+        p.setColor(Color.argb(225, 0, 0, 0));
         p.setTextSize(mHUDText);
         c.drawText("PAUSE", controls.get(PAUSE).right / 3.6f,
                 controls.get(PAUSE).bottom / 1.6f, p);
         c.drawText("RESET", controls.get(RESET).right - (controls.get(RESET).left / 1.6f),
-                (controls.get(RESET).top + controls.get(RESET).bottom / 1.6f) , p);
+                (controls.get(RESET).top + controls.get(RESET).bottom / 1.6f), p);
         c.drawText("TOWER", controls.get(TOWER).right - (controls.get(TOWER).left / 3.0f),
-                   (controls.get(TOWER).top + controls.get(TOWER).bottom / 1.6f) , p);
+                (controls.get(TOWER).top + controls.get(TOWER).bottom / 1.6f), p);
 
 
         // Set the colors back
-        p.setColor(Color.argb(255,255,255,255));
+        p.setColor(Color.argb(255, 255, 255, 255));
     }
 
     static ArrayList<Rect> getControls() {

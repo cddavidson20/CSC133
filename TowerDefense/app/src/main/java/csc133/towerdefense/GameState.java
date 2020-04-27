@@ -97,7 +97,9 @@ public class GameState {
         mDrawing = true;
     }
 
-    boolean getDrawing() {return mDrawing;}
+    boolean getDrawing() {
+        return mDrawing;
+    }
 
     boolean getPaused() {
         return mPaused;

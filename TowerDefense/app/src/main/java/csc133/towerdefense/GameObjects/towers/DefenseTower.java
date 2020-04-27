@@ -26,7 +26,6 @@ public class DefenseTower extends AbstractTower {
     private static int defenceTowerCost = 100;
     private static int damagePerShot = 3;
 
-
     public DefenseTower() {
         super();
     }
@@ -54,28 +53,35 @@ public class DefenseTower extends AbstractTower {
         return defenceTowerCost;
     }
 
+    public Point getPosition() { return centerOfTowerImage; }
+
     public void draw(Canvas canvas, Paint paint) {
+
         shoot(canvas, paint);
+        paint.setAlpha(255);
         canvas.drawBitmap(bitmap, centerOfTowerImage.x - sizeOfDefenseTowerImage.x,
                         centerOfTowerImage.y - sizeOfDefenseTowerImage.y, paint);
     }
 
     private void shoot(Canvas canvas, Paint paint) {
-        for (int i = enemies.size() -1; i >=0; i--) {
+        boolean enemyInRange = false;
+        for (int i = enemies.size() - 1; i >= 0; i--) {
             Enemy enemy = enemies.get(i);
             if (enemyInRange(enemy)) {
-                paint.setColor(Color.argb(50, 255, 0, 0));
-                canvas.drawRect(range, paint);
+                enemyInRange = true;
                 paint.setColor(Color.rgb(255, 255, 0));
                 canvas.drawLine(centerOfTowerImage.x, centerOfTowerImage.y,
                         enemy.headLocation.x * blockSize,
                         enemy.headLocation.y * blockSize + (int) (blockSize * 2.5), paint);
                 enemy.enemyShot(damagePerShot, i);
-            } else {
-                paint.setColor(Color.argb(50, 255, 255, 255));
-                canvas.drawRect(range, paint);
-                paint.setAlpha(255);
             }
+        }
+        if (enemyInRange) {
+            paint.setColor(Color.argb(50, 255, 0, 0));
+            canvas.drawRect(range, paint);
+        } else {
+            paint.setColor(Color.argb(50, 255, 255, 255));
+            canvas.drawRect(range, paint);
         }
     }
 

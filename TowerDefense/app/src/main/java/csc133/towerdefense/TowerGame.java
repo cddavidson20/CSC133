@@ -98,7 +98,7 @@ public class TowerGame extends SurfaceView implements Runnable, GameEngineBroadc
                     update();
             }
 
-           draw();
+            draw();
         }
     }
 
@@ -156,7 +156,7 @@ public class TowerGame extends SurfaceView implements Runnable, GameEngineBroadc
     public boolean onTouchEvent(MotionEvent motionEvent) {
         final int actionPreformed = motionEvent.getAction();
 
-        switch(actionPreformed) {
+        switch (actionPreformed) {
             case MotionEvent.ACTION_MOVE:
             case MotionEvent.ACTION_DOWN:
                 for (InputObserver o : inputObservers) {

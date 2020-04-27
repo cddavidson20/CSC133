@@ -6,9 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 
-
 import csc133.towerdefense.GameObjects.enemies.Enemy;
-import csc133.towerdefense.GameObjects.towers.DefenseTower;
 
 public class Base {
     private Rect base;
@@ -20,7 +18,7 @@ public class Base {
 
     public void drawBase(Canvas mCanvas, Paint mPaint) {
         mPaint.setColor(Color.argb(100, 255, 0, 0));
-        base = new Rect(1700,650,1800,950);
+        base = new Rect(1700, 650, 1800, 950);
         mCanvas.drawRect(base, mPaint);
     }
 

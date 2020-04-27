@@ -26,7 +26,7 @@ class UIController implements InputObserver {
 
         final int actionPreformed = event.getAction();
 
-        switch(actionPreformed) {
+        switch (actionPreformed) {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_DOWN: {
                 final float x = event.getX();
@@ -98,7 +98,7 @@ class UIController implements InputObserver {
     }
 
     private void towerPressed(GameObject gameObject, float x, float y) {
-        gameObject.newTowerLocation( (int) x, (int) y);
+        gameObject.newTowerLocation((int) x, (int) y);
     }
 
 }

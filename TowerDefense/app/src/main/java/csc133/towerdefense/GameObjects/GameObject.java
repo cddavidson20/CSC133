@@ -1,16 +1,12 @@
 package csc133.towerdefense.GameObjects;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
-import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
-
-import csc133.towerdefense.GameObjects.enemies.AbstractEnemy;
 import csc133.towerdefense.GameObjects.enemies.Enemy;
 import csc133.towerdefense.GameObjects.towers.AbstractTower;
 import csc133.towerdefense.GameObjects.towers.DefenseTower;
@@ -72,7 +68,8 @@ public class GameObject extends SurfaceView {
         for (Enemy enemy : enemies)
             enemy.draw(mCanvas, mPaint);
 
-        for (AbstractTower t : towers) {
+        for (int i = 0; i < towers.size(); ++i) {
+            AbstractTower t = towers.get(i);
             t.draw(mCanvas, mPaint);
         }
     }
@@ -100,7 +97,7 @@ public class GameObject extends SurfaceView {
     }
     public void spawnWave() {
         for (int i = 0; i < gameState.getWave(); i++) {
-            enemies.add(new Enemy(context, this, gameState, blockSize, new Point(-10, -10)));
+            enemies.add(new Enemy(context, this, gameState, blockSize, new Point(-i, 0)));
         }
         spawnWave = !spawnWave;
     }
