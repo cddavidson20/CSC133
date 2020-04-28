@@ -17,8 +17,18 @@ public class Enemy extends AbstractEnemy {
     public Point headLocation;
     private int health = 100;
     private int deadGold = 100;
-
+    private Point enemyPos;
     private Point[] path;
+
+    // Start by heading to the right
+    private Heading heading = Heading.RIGHT;
+
+    private int blockSize;
+    private int currPathIndex = 0;
+
+    private Point hudOffset;
+    private GameState gameState;
+    private GameObject gameObject;
 
     // A bitmap for each direction the head can face
     private Bitmap mBitmapHeadRight;
@@ -30,15 +40,6 @@ public class Enemy extends AbstractEnemy {
     enum Heading {
         UP, RIGHT, DOWN, LEFT
     }
-    // Start by heading to the right
-    private Heading heading = Heading.RIGHT;
-
-    private int blockSize;
-    private int currPathIndex = 0;
-
-    private Point hudOffset;
-    private GameState gameState;
-    private GameObject gameObject;
 
     public Enemy(Context context, GameObject gameObject, GameState gameState, int bs, Point mr) {
         super();
@@ -93,18 +94,20 @@ public class Enemy extends AbstractEnemy {
         // How many blocks of the same size will fit into the height
         int mNumBlocksHigh = mr.y / blockSize;
         int halfWayPoint = mr.x * blockSize / 2;
-        hudOffset = new Point(0, (int)(2.5 * blockSize));
+        hudOffset = new Point(0, (int) (2.5 * blockSize));
 
-        path = new Point[] {
+        path = new Point[]{
                 new Point(0, 0),
                 new Point(25, 0),
                 new Point(25, 15),
                 new Point(50, 15)
         };
-        headLocation = new Point(path[0].x, path[0].y);
+        enemyPos = mr;
+        headLocation = new Point(enemyPos.x, enemyPos.y);
     }
 
     public void draw(Canvas canvas, Paint paint) {
+        paint.setAlpha(255);
         // Draw the head
         switch (heading) {
             case RIGHT:
@@ -145,7 +148,7 @@ public class Enemy extends AbstractEnemy {
         // Reset the heading
         heading = Heading.RIGHT;
         currPathIndex = 0;
-        headLocation = new Point(path[0].x, path[0].y);
+        headLocation = new Point(enemyPos.x, enemyPos.y);
     }
 
     public void move() {
@@ -153,7 +156,6 @@ public class Enemy extends AbstractEnemy {
     }
 
     private void followPath() {
-
         while (true) {
             boolean getout = true;
             if (currPathIndex >= path.length) return;

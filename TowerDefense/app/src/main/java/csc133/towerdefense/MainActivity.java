@@ -17,7 +17,6 @@ public class MainActivity extends Activity {
         Point size = new Point();
         display.getSize(size);
 
-
         mTowerGame = new TowerGame(this, size);
 
         setContentView(mTowerGame);
