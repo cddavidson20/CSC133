@@ -16,7 +16,7 @@ public class Enemy extends AbstractEnemy {
 
     public Point headLocation;
     private int health = 100;
-    private int deadGold = 100;
+    private static int killedGold = 25;
     private Point enemyPos;
     private Point[] path;
 
@@ -201,9 +201,16 @@ public class Enemy extends AbstractEnemy {
     public void enemyShot(int healthTaken, int indexOfEnemy) {
         health -= healthTaken;
         if (health <= 0) {
-            gameState.gainedGold(100);
+            gameState.gainedGold(killedGold);
             gameObject.enemyDead(indexOfEnemy);
         }
+    }
+
+    public Point centerOfEnemy() {
+        Point center = new Point();
+        center.x = headLocation.x;
+        center.y = headLocation.y;
+        return center;
     }
 
     public void enemyReachedBase(int indexOfEnemy) {

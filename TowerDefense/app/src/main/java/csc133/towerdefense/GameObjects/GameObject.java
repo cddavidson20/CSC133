@@ -37,7 +37,7 @@ public class GameObject extends SurfaceView {
         this.context = context;
         this.gameState = gameState;
         // Work out how many pixels each block is
-        this.blockSize = size.x / NUM_BLOCKS_WIDE;
+        this.blockSize = size.x / NUM_BLOCKS_WIDE; //40 currently
         // How many blocks of the same size will fit into the height
         mNumBlocksHigh = size.y / blockSize;
 
