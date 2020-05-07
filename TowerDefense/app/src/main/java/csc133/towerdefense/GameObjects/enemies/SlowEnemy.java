@@ -8,15 +8,14 @@ import android.graphics.Paint;
 import csc133.towerdefense.GameObjects.GameObject;
 import csc133.towerdefense.GameState;
 
-public class Enemy extends AbstractEnemy {
-
-    private static int health = 100;
-    private static int killedGold = 25;
+public class SlowEnemy extends AbstractEnemy {
+    private static int health = 200;
+    private static int killedGold = 75;
 
     private int currPathIndex = 0;
 
-    public Enemy(Context context, GameObject gameObject, GameState gameState, int bs, Point mr) {
-        super(context, gameObject, gameState, bs, mr, "Enemy", health, killedGold);
+    public SlowEnemy(Context context, GameObject gameObject, GameState gameState, int bs, Point mr) {
+        super(context, gameObject, gameState, bs, mr, "SlowEnemy", health, killedGold);
     }
 
     public void draw(Canvas canvas, Paint paint) {
@@ -26,7 +25,7 @@ public class Enemy extends AbstractEnemy {
 
     public void reset(int w, int h) {
         // Reset the heading
-        super.reset(w,h);
+        super.reset(w, h);
     }
 
     public void move() {

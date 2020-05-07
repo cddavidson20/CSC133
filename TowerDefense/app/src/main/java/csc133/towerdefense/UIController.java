@@ -44,7 +44,7 @@ class UIController implements InputObserver {
                 lastXAxis = x;
                 lastYAxis = y;
                 if (buttons.get(HUD.PAUSE).contains((int) x, (int) y)) {
-                    pausePressed(gameState);
+                    pausePressed(gameState, gameObject);
                 }
                 if (buttons.get(HUD.RESET).contains((int) x, (int) y)) {
                     resetPressed(gameObject);
@@ -69,13 +69,12 @@ class UIController implements InputObserver {
 
     }
 
-    private void pausePressed(GameState gameState) {
+    private void pausePressed(GameState gameState, GameObject gameObject) {
         // Player pressed the pause button
         // Respond differently depending upon the game's state
 
         // If the game is not paused
         if (!gameState.getPaused()) {
-            // Pause the game
             gameState.pause();
             gameState.passedWave();
         }
@@ -83,6 +82,7 @@ class UIController implements InputObserver {
         // If game is over start a new game
         else if (gameState.getGameOver()) {
             gameState.startNewGame();
+            resetPressed(gameObject);
         }
 
         // Paused and not game over

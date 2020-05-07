@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 
+import csc133.towerdefense.GameObjects.enemies.AbstractEnemy;
 import csc133.towerdefense.GameObjects.enemies.Enemy;
 
 public class Base {
@@ -23,9 +24,9 @@ public class Base {
     }
 
     //check if an enemy is hitting the base
-    public boolean hittingBase(Enemy enemy) {
-        return base.contains((enemy.headLocation.x * bs),
-                (enemy.headLocation.y * bs + (int) (bs * 2.5)));
+    public boolean hittingBase(AbstractEnemy enemy) {
+        Point centerOfEnemy = new Point(enemy.centerOfEnemy());
+        return base.contains(centerOfEnemy.x, centerOfEnemy.y);
     }
 
     public boolean hittingBase(Point p) {
