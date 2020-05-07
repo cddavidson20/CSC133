@@ -20,6 +20,7 @@ public class DefenseTower extends AbstractTower {
     private ArrayList<Enemy> enemies;
     private Rect range;
     private int blockSize;
+    private boolean towerClicked = false;
 
     private final Point sizeOfDefenseTowerImage = new Point(27,27);
     private Point centerOfTowerImage;
@@ -65,30 +66,32 @@ public class DefenseTower extends AbstractTower {
 
     private void shoot(Canvas canvas, Paint paint) {
         boolean enemyInRange = false;
+        //TODO make enemies not shootable on pause
         for (int i = enemies.size() - 1; i >= 0; i--) {
             Enemy enemy = enemies.get(i);
-            if (enemyInRange(enemy)) {
+            Point centerOfEnemy = new Point(enemy.centerOfEnemy());
+            centerOfEnemy.x = centerOfEnemy.x * blockSize + 20;
+            centerOfEnemy.y += centerOfEnemy.y * blockSize + (int) (blockSize * 2.5) + 20;
+            if (enemyInRange(centerOfEnemy) && !enemyInRange) {
                 enemyInRange = true;
                 paint.setColor(Color.rgb(255, 255, 0));
                 canvas.drawLine(centerOfTowerImage.x, centerOfTowerImage.y,
-                        enemy.headLocation.x * blockSize,
-                        enemy.headLocation.y * blockSize + (int) (blockSize * 2.5), paint);
+                        centerOfEnemy.x, centerOfEnemy.y, paint);
                 enemy.enemyShot(damagePerShot, i);
             }
         }
         if (enemyInRange) {
-            paint.setColor(Color.argb(50, 255, 0, 0));
-            canvas.drawRect(range, paint);
-        } else {
-            paint.setColor(Color.argb(50, 255, 255, 255));
-            canvas.drawRect(range, paint);
+                paint.setColor(Color.argb(50, 255, 0, 0));
+                canvas.drawRect(range, paint);
+        } else if (towerClicked){
+                paint.setColor(Color.argb(50, 255, 255, 255));
+                canvas.drawRect(range, paint);
         }
     }
 
     //check if an enemy is in range
-    private boolean enemyInRange(Enemy enemy) {
-            return range.contains((enemy.headLocation.x * blockSize),
-                    (enemy.headLocation.y * blockSize + (int) (blockSize * 2.5)));
+    private boolean enemyInRange(Point centerOfEnemy) {
+            return range.contains((centerOfEnemy.x), (centerOfEnemy.y));
     }
 
     public Rect rangeOfTower() {

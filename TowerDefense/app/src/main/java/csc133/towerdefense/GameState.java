@@ -119,8 +119,8 @@ public class GameState {
 
     public void incrementWave() {
         wave++;
-        // gain 1 life if you passed a wave
-        incrementLives();
+        // gain 1 life if you passed a wave?
+        //incrementLives();
     }
 
     int getGold() {
