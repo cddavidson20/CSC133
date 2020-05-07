@@ -7,7 +7,11 @@ import android.graphics.Point;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
+import java.util.Random;
+
+import csc133.towerdefense.GameObjects.enemies.AbstractEnemy;
 import csc133.towerdefense.GameObjects.enemies.Enemy;
+import csc133.towerdefense.GameObjects.enemies.SlowEnemy;
 import csc133.towerdefense.GameObjects.towers.AbstractTower;
 import csc133.towerdefense.GameObjects.towers.DefenseTower;
 import csc133.towerdefense.GameState;
@@ -21,10 +25,11 @@ public class GameObject extends SurfaceView {
 
     private GameState gameState;
 
-    private ArrayList<Enemy> enemies;
+    private ArrayList<AbstractEnemy> enemies;
     private ArrayList<AbstractTower> towers;
     private Path path;
     private Base base;
+    private Random rand;
 
     private final int NUM_BLOCKS_WIDE = 40;
     private int mNumBlocksHigh;
@@ -40,6 +45,8 @@ public class GameObject extends SurfaceView {
         this.blockSize = size.x / NUM_BLOCKS_WIDE; //40 currently
         // How many blocks of the same size will fit into the height
         mNumBlocksHigh = size.y / blockSize;
+
+        rand = new Random();
 
         towers = new ArrayList<>();
         enemies = new ArrayList<>();
@@ -65,7 +72,7 @@ public class GameObject extends SurfaceView {
     public void draw(Canvas mCanvas, Paint mPaint) {
         path.drawPath(mCanvas, mPaint);
         base.drawBase(mCanvas, mPaint);
-        for (Enemy enemy : enemies)
+        for (AbstractEnemy enemy : enemies)
             enemy.draw(mCanvas, mPaint);
 
         for (int i = 0; i < towers.size(); ++i) {
@@ -74,14 +81,14 @@ public class GameObject extends SurfaceView {
         }
     }
 
-    public void drawEnemy(Canvas mCanvas, Paint mPaint, Enemy enemy){
+    public void drawEnemy(Canvas mCanvas, Paint mPaint, AbstractEnemy enemy){
         enemy.draw(mCanvas, mPaint);
     }
 
     public void update(Canvas mCanvas, Paint mPaint) {
        if (enemies.size() > 0) {
            for (int i = enemies.size() - 1; i >=0; i--) {
-               Enemy enemy = enemies.get(i);
+               AbstractEnemy enemy = enemies.get(i);
                enemy.move();
                if (base.hittingBase(enemy)) {
                    enemy.enemyReachedBase(i);
@@ -97,7 +104,11 @@ public class GameObject extends SurfaceView {
     }
     public void spawnWave() {
         for (int i = 0; i < gameState.getWave(); i++) {
-            enemies.add(new Enemy(context, this, gameState, blockSize, new Point(-i, 0)));
+            int chooseEnemy = rand.nextInt(3);
+            if (chooseEnemy <= 1)
+                enemies.add(new Enemy(context, this, gameState, blockSize, new Point(-i, 0)));
+            if (chooseEnemy > 1)
+                enemies.add(new SlowEnemy(context, this, gameState, blockSize, new Point(-i, 0)));
         }
         spawnWave = !spawnWave;
     }
@@ -105,8 +116,7 @@ public class GameObject extends SurfaceView {
     public void newTowerLocation(int x, int y) {
         Point p = new Point(x, y);
         if (!base.hittingBase(p) && !path.hittingPath(p)) {
-            towers.add(new DefenseTower(context, p, enemies, blockSize));
-            gameState.spentGold(DefenseTower.cost());
+            towers.add(new DefenseTower(context, p, gameState, enemies, blockSize));
         } else {
             System.out.println("Tower can't be placed on base.");
         }

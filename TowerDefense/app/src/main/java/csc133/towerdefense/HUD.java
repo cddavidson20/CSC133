@@ -56,24 +56,24 @@ class HUD {
         // Draw the HUD
         p.setColor(Color.argb(255, 255, 255, 255));
         p.setTextSize(mTextFormatting);
-        c.drawText("Wave: " + gs.getWave(), mScreenWidth - (mScreenWidth / 10), mScreenHeight / 30, p);
-        c.drawText("Gold: " + gs.getGold(), mScreenWidth - (mScreenWidth / 10), mScreenHeight / 14, p);
-        c.drawText("Lives: " + gs.getLives(), mScreenWidth - (mScreenWidth / 5), mScreenHeight / 30, p);
+        c.drawText("Wave: " + gs.getWave(), mScreenWidth - (mScreenWidth / 10.0f), mScreenHeight / 30.0f, p);
+        c.drawText("Gold: " + gs.getGold(), mScreenWidth - (mScreenWidth / 5.0f), mScreenHeight / 14.0f, p);
+        c.drawText("Lives: " + gs.getLives(), mScreenWidth - (mScreenWidth / 5.0f), mScreenHeight / 30.0f, p);
 
         if (gs.getGameOver()) {
             p.setTextSize(mTextFormatting * 5);
-            c.drawText("PRESS PLAY", mScreenWidth / 4, mScreenHeight / 2, p);
+            c.drawText("New Game", mScreenWidth / 4.0f, mScreenHeight / 2.0f, p);
         }
 
         if (gs.getPaused() && !gs.getGameOver()) {
             p.setTextSize(mTextFormatting * 5);
-            c.drawText("PAUSED", mScreenWidth / 3, mScreenHeight / 2, p);
+            c.drawText("PAUSED", mScreenWidth / 3.0f, mScreenHeight / 2.0f, p);
         }
 
-        drawHUD(c, p);
+        drawHUD(c, p, gs);
     }
 
-    private void drawHUD(Canvas c, Paint p) {
+    private void drawHUD(Canvas c, Paint p, GameState gs) {
         p.setColor(Color.argb(100, 255, 255, 255));
         c.drawRect(baseHUD, p);
 
@@ -84,8 +84,13 @@ class HUD {
 
         p.setColor(Color.argb(225, 0, 0, 0));
         p.setTextSize(mHUDText);
-        c.drawText("PAUSE", controls.get(PAUSE).right / 3.6f,
-                controls.get(PAUSE).bottom / 1.6f, p);
+        if (gs.getPaused()) {
+            c.drawText("PAUSE", controls.get(PAUSE).right / 3.6f,
+                    controls.get(PAUSE).bottom / 1.6f, p);
+        } else {
+            c.drawText("PLAY", controls.get(PAUSE).right / 3.6f,
+                    controls.get(PAUSE).bottom / 1.6f, p);
+        }
         c.drawText("RESET", controls.get(RESET).right - (controls.get(RESET).left / 1.6f),
                 (controls.get(RESET).top + controls.get(RESET).bottom / 1.6f), p);
         c.drawText("TOWER", controls.get(TOWER).right - (controls.get(TOWER).left / 3.0f),

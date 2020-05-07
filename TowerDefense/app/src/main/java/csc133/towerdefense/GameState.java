@@ -101,7 +101,7 @@ public class GameState {
         return mDrawing;
     }
 
-    boolean getPaused() {
+    public boolean getPaused() {
         return mPaused;
     }
 

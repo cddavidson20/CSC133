@@ -11,19 +11,21 @@ import android.graphics.Rect;
 
 import java.util.ArrayList;
 
-import csc133.towerdefense.GameObjects.enemies.Enemy;
+import csc133.towerdefense.GameObjects.enemies.AbstractEnemy;
+import csc133.towerdefense.GameState;
 import csc133.towerdefense.R;
 
 public class DefenseTower extends AbstractTower {
 
     private Bitmap bitmap;
-    private ArrayList<Enemy> enemies;
+    private ArrayList<AbstractEnemy> enemies;
     private Rect range;
     private int blockSize;
     private boolean towerClicked = false;
 
     private final Point sizeOfDefenseTowerImage = new Point(27,27);
     private Point centerOfTowerImage;
+    private GameState gameState;
     private static int defenceTowerCost = 100;
     private static int damagePerShot = 3;
 
@@ -31,7 +33,7 @@ public class DefenseTower extends AbstractTower {
         super();
     }
 
-    public DefenseTower(Context context, Point position, ArrayList<Enemy> enemies, int bs) {
+    public DefenseTower(Context context, Point position, GameState gs, ArrayList<AbstractEnemy> enemies, int bs) {
         super(context, position);
         this.enemies = enemies;
         this.blockSize = bs;
@@ -48,6 +50,8 @@ public class DefenseTower extends AbstractTower {
         bitmap = BitmapFactory
                 .decodeResource(context.getResources(),
                         R.drawable.defense_tower);
+        this.gameState = gs;
+        gameState.spentGold(DefenseTower.cost());
     }
 
     public static int cost() {
@@ -66,20 +70,21 @@ public class DefenseTower extends AbstractTower {
 
     private void shoot(Canvas canvas, Paint paint) {
         boolean enemyInRange = false;
-        //TODO make enemies not shootable on pause
         for (int i = enemies.size() - 1; i >= 0; i--) {
-            Enemy enemy = enemies.get(i);
+            AbstractEnemy enemy = enemies.get(i);
             Point centerOfEnemy = new Point(enemy.centerOfEnemy());
-            centerOfEnemy.x = centerOfEnemy.x * blockSize + 20;
-            centerOfEnemy.y += centerOfEnemy.y * blockSize + (int) (blockSize * 2.5) + 20;
             if (enemyInRange(centerOfEnemy) && !enemyInRange) {
                 enemyInRange = true;
                 paint.setColor(Color.rgb(255, 255, 0));
                 canvas.drawLine(centerOfTowerImage.x, centerOfTowerImage.y,
                         centerOfEnemy.x, centerOfEnemy.y, paint);
-                enemy.enemyShot(damagePerShot, i);
+                //make enemies not shootable on pause
+                if(!gameState.getPaused()) {
+                    enemy.enemyShot(damagePerShot, i);
+                }
             }
         }
+
         if (enemyInRange) {
                 paint.setColor(Color.argb(50, 255, 0, 0));
                 canvas.drawRect(range, paint);
