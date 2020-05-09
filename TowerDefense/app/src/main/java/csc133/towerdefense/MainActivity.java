@@ -15,10 +15,10 @@ import csc133.towerdefense.game.GameLoop;
  */
 public class MainActivity extends Activity {
     GameLoop gameLoop;
-    Bitmap blankBitmap;
     int numberHorizontalPixels, numberVerticalPixels, blockSize,
             gridWidth = 1, gridHeight;
     Canvas canvas;
+    Bitmap blankBitmap;
     Paint paint;
 
     @Override
@@ -33,9 +33,9 @@ public class MainActivity extends Activity {
         numberVerticalPixels = size.y;
         blockSize = numberHorizontalPixels / gridWidth;
         gridHeight = numberVerticalPixels / blockSize;
-        blankBitmap = Bitmap.createBitmap(numberHorizontalPixels, numberVerticalPixels, Bitmap.Config.ARGB_8888);
 
-        canvas = new Canvas(blankBitmap);
+        //blankBitmap = Bitmap.createBitmap(numberHorizontalPixels, numberVerticalPixels, Bitmap.Config.ARGB_8888);
+        //canvas = new Canvas(blankBitmap);
         paint = new Paint();
 
         gameLoop = new GameLoop(this, blockSize, size);

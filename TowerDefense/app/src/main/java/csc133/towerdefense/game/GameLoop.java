@@ -19,9 +19,9 @@ public class GameLoop extends SurfaceView implements Runnable {
 
     boolean playing;
     boolean paused;
-    Thread gameThread;
     long FPS;
     int blockSize;
+    Thread gameThread;
     Game game;
     SurfaceHolder holder;
 
@@ -34,6 +34,7 @@ public class GameLoop extends SurfaceView implements Runnable {
         holder = getHolder();
         game = new Game();
 
+        //idk why background takes in a point size
         background = new Background();
         background.initialize(context, "background", size);
 

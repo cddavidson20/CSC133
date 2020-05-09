@@ -7,6 +7,9 @@ import android.graphics.PointF;
 
 import java.util.ArrayList;
 
+/**
+ * The path that the enemies will travel on.
+ */
 public class MovePath {
     public ArrayList<PointF> points;
     public float width;
@@ -28,7 +31,7 @@ public class MovePath {
     public void draw(Canvas canvas) {
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.YELLOW);
+        paint.setColor(Color.WHITE);
 
         PointF prevP = getStartingPoint();
 

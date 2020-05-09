@@ -10,10 +10,10 @@ import csc133.towerdefense.game.helpers.Functions;
 import csc133.towerdefense.game.movepath.MovePath;
 
 /**
- *
+ * Anemy
  */
 public class Enemy extends GameObject {
-    public static float ENEMY_SIZE = 20;
+    public static float ENEMY_SIZE = 25;
     public static float ENEMY_HEALTH_MAX = 1;
     public static float ENEMY_SPEED = 5;
 
