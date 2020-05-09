@@ -1,13 +1,25 @@
 package csc133.towerdefense;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
 
-public class MainActivity extends Activity {
+import csc133.towerdefense.game.GameLoop;
 
-    TowerGame mTowerGame;
+/**
+ *
+ */
+public class MainActivity extends Activity {
+    GameLoop gameLoop;
+    Bitmap blankBitmap;
+    int numberHorizontalPixels, numberVerticalPixels, blockSize,
+            gridWidth = 1, gridHeight;
+    Canvas canvas;
+    Paint paint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,22 +29,31 @@ public class MainActivity extends Activity {
         Point size = new Point();
         display.getSize(size);
 
-        mTowerGame = new TowerGame(this, size);
+        numberHorizontalPixels = size.x;
+        numberVerticalPixels = size.y;
+        blockSize = numberHorizontalPixels / gridWidth;
+        gridHeight = numberVerticalPixels / blockSize;
+        blankBitmap = Bitmap.createBitmap(numberHorizontalPixels, numberVerticalPixels, Bitmap.Config.ARGB_8888);
 
-        setContentView(mTowerGame);
+        canvas = new Canvas(blankBitmap);
+        paint = new Paint();
+
+        gameLoop = new GameLoop(this, blockSize, size);
+
+        setContentView(gameLoop);
+
     }
 
-    // Start the thread in towerGame
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mTowerGame.resume();
-    }
-
-    // Stop the thread in towerGame
     @Override
     protected void onPause() {
         super.onPause();
-        mTowerGame.pause();
+        gameLoop.pause();
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        gameLoop.resume();
+    }
+
 }
