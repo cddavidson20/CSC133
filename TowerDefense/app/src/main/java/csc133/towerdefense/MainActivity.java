@@ -34,8 +34,6 @@ public class MainActivity extends Activity {
         blockSize = numberHorizontalPixels / gridWidth;
         gridHeight = numberVerticalPixels / blockSize;
 
-        //blankBitmap = Bitmap.createBitmap(numberHorizontalPixels, numberVerticalPixels, Bitmap.Config.ARGB_8888);
-        //canvas = new Canvas(blankBitmap);
         paint = new Paint();
 
         gameLoop = new GameLoop(this, blockSize, size);

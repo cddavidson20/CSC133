@@ -13,9 +13,11 @@ import android.view.SurfaceView;
  * The name says it all, there's a hole in the wall.
  */
 public class GameLoop extends SurfaceView implements Runnable {
-    static final int MAX_FPS = 60;
-    static final int MILLIS_IN_SECOND = 1000;
-    static final int FRAME_PERIOD = MILLIS_IN_SECOND / MAX_FPS;
+    public static final int MAX_FPS = 60;
+    public static final int MILLIS_IN_SECOND = 1000;
+    public static final int FRAME_PERIOD = MILLIS_IN_SECOND / MAX_FPS;
+
+    public static long framesRan = 0;
 
     boolean playing;
     boolean paused;
@@ -67,6 +69,7 @@ public class GameLoop extends SurfaceView implements Runnable {
             // 1. update objects
             if (!paused) {
                 update();
+                ++framesRan;
             }
 
             // 2. draw animation

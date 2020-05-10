@@ -13,8 +13,7 @@ public class Paths {
     public static final MovePath[] Paths =  new MovePath[] {
         new MovePath(
             new PointF[] {
-                new PointF(40, 100),
-                new PointF(500, 100),
+                new PointF(0, 300),
                 new PointF(500, 300),
                 new PointF(1000, 300),
                 new PointF(1000, 500),

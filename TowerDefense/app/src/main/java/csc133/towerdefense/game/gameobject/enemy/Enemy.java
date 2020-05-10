@@ -13,10 +13,6 @@ import csc133.towerdefense.game.movepath.MovePath;
  * Anemy
  */
 public class Enemy extends GameObject {
-    public static float ENEMY_SIZE = 25;
-    public static float ENEMY_HEALTH_MAX = 1;
-    public static float ENEMY_SPEED = 5;
-
     public float healthMax;
     public float health;
     public float speed;
@@ -30,25 +26,14 @@ public class Enemy extends GameObject {
     MovePath path;
     int pathIndex;
 
-    public Enemy(float x, float y, MovePath path, float offsetX, float offsetY) {
-        super(x, y, ENEMY_SIZE);
-        this.offsetX = offsetX;
-        this.offsetY = offsetY;
+    public Enemy() {
+        super();
+    }
+
+    public void setPath(MovePath path) {
         this.path = path;
         this.pathIndex = -1;
         nextPoint();
-        this.healthMax = ENEMY_HEALTH_MAX;
-        this.speed = ENEMY_SPEED;
-
-        this.health = healthMax;
-    }
-
-    public Enemy(float x, float y, MovePath path) {
-        this(x, y, path, 0, 0);
-    }
-
-    public Enemy(MovePath path) {
-        this(path.getStartingPoint().x, path.getStartingPoint().y, path);
     }
 
     private void nextPoint() {
@@ -64,7 +49,6 @@ public class Enemy extends GameObject {
 
     public void update() {
         move();
-
         checkDeath();
     }
 
