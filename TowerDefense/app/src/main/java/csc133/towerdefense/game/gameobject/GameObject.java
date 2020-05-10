@@ -24,7 +24,8 @@ public abstract class GameObject implements IDrawable, IUpdatable {
         this(x, y, size, size);
     }
 
-    public GameObject() {};
+    public GameObject() {
+    }
 
     abstract public void draw(Canvas canvas);
 

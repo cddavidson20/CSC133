@@ -9,9 +9,6 @@ import csc133.towerdefense.game.gameobject.GameObject;
 import csc133.towerdefense.game.helpers.Functions;
 import csc133.towerdefense.game.movepath.MovePath;
 
-/**
- * Anemy
- */
 public class Enemy extends GameObject {
     public float healthMax;
     public float health;
@@ -38,7 +35,7 @@ public class Enemy extends GameObject {
 
     private void nextPoint() {
         if (pathIndex + 1 >= path.points.size()) {
-            // TODO niga died
+
         } else {
             ++pathIndex;
             this.targetX = path.points.get(pathIndex).x + offsetX;
@@ -63,7 +60,6 @@ public class Enemy extends GameObject {
         float postX = x + unitDir.x * speed;
         float postY = y + unitDir.y * speed;
 
-        // clamp that pdick
         if (Functions.oppositeSigns(targetX - this.x, targetX - postX)) {
             this.x = targetX;
         } else {

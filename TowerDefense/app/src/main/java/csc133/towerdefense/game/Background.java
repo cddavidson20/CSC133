@@ -31,7 +31,6 @@ public class Background {
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
 
-        // help understand
         // For the regular bitmap
         Rect fromRect1 = new Rect(0, 0, width, height);
         Rect toRect1 = new Rect(0, 0, width, height);

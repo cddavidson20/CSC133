@@ -9,9 +9,6 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-/**
- * The name says it all, there's a hole in the wall.
- */
 public class GameLoop extends SurfaceView implements Runnable {
     public static final int MAX_FPS = 60;
     public static final int MILLIS_IN_SECOND = 1000;
@@ -22,21 +19,18 @@ public class GameLoop extends SurfaceView implements Runnable {
     boolean playing;
     boolean paused;
     long FPS;
-    int blockSize;
     Thread gameThread;
     Game game;
     SurfaceHolder holder;
 
     private Background background;
 
-    public GameLoop(Context context, int blockSize, Point size) {
+    public GameLoop(Context context, Point size) {
         super(context);
 
-        this.blockSize = blockSize;
         holder = getHolder();
         game = new Game();
 
-        //idk why background takes in a point size
         background = new Background();
         background.initialize(context, "background", size);
 
@@ -75,7 +69,6 @@ public class GameLoop extends SurfaceView implements Runnable {
             // 2. draw animation
             draw();
 
-            // 3. touch me mommy
             long timeThisFrame = System.currentTimeMillis() - frameStartTime;
             if (timeThisFrame > 0) {
                 FPS = MILLIS_IN_SECOND / timeThisFrame;
@@ -87,7 +80,7 @@ public class GameLoop extends SurfaceView implements Runnable {
             if (sleepTime > 0) {
                 try {
                     Thread.sleep(sleepTime);
-                } catch(Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }

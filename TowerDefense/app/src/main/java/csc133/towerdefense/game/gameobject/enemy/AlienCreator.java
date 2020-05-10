@@ -4,9 +4,11 @@ import csc133.towerdefense.game.movepath.MovePath;
 
 public class AlienCreator {
     IEnemyBuilder enemyBuilder;
+
     public AlienCreator(IEnemyBuilder enemyBuilder) {
         this.enemyBuilder = enemyBuilder;
     }
+
     public Enemy createAlien(float x, float y, MovePath path, boolean haveOffset) {
         enemyBuilder.newEnemy();
         enemyBuilder.setStart(x, y);

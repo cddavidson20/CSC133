@@ -1,8 +1,6 @@
 package csc133.towerdefense;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -10,15 +8,10 @@ import android.view.Display;
 
 import csc133.towerdefense.game.GameLoop;
 
-/**
- *
- */
 public class MainActivity extends Activity {
     GameLoop gameLoop;
     int numberHorizontalPixels, numberVerticalPixels, blockSize,
             gridWidth = 1, gridHeight;
-    Canvas canvas;
-    Bitmap blankBitmap;
     Paint paint;
 
     @Override
@@ -36,7 +29,7 @@ public class MainActivity extends Activity {
 
         paint = new Paint();
 
-        gameLoop = new GameLoop(this, blockSize, size);
+        gameLoop = new GameLoop(this, size);
 
         setContentView(gameLoop);
 

@@ -2,7 +2,6 @@ package csc133.towerdefense.game.gameobject.tower;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 
 import java.util.ArrayList;
@@ -40,22 +39,18 @@ public class Tower extends GameObject {
 
     public void update() {
         if (target != null) {
-            rotation = (float)((Functions.getDirectionAngle(x, y, target.x, target.y) * 180) / Math.PI);
+            rotation = (float) ((Functions.getDirectionAngle(x, y, target.x, target.y) * 180) / Math.PI);
         }
 
-        if (target != null && canFire()) {
-            willFire = true;
-        } else {
-            willFire = false;
-        }
+        willFire = target != null && canFire();
 
         target = null;
     }
 
     public void tryToFire(ArrayList<Bullet> bullets) {
         if (willFire && target != null) {
-            float xx = x + (float)(Math.cos((rotation) * Math.PI / 180) * (width / 2));
-            float yy = y + (float)(Math.sin((rotation) * Math.PI / 180) * (height / 2));
+            float xx = x + (float) (Math.cos((rotation) * Math.PI / 180) * (width / 2));
+            float yy = y + (float) (Math.sin((rotation) * Math.PI / 180) * (height / 2));
             bullets.add(new Bullet(xx, yy, target.x, target.y, bulletSize, bulletSpeed, bulletDamage, bulletHealth));
             lastFired = GameLoop.framesRan;
         }
