@@ -6,7 +6,7 @@ import android.graphics.Paint;
 
 import java.util.ArrayList;
 
-import csc133.towerdefense.game.GameEngine;
+import csc133.towerdefense.game.engine.GameEngine;
 import csc133.towerdefense.game.gameobject.Bullet;
 import csc133.towerdefense.game.gameobject.GameObject;
 import csc133.towerdefense.game.gameobject.enemy.Enemy;

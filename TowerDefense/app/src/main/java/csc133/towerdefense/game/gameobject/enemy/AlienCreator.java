@@ -15,6 +15,7 @@ public class AlienCreator {
         enemyBuilder.setHealth();
         enemyBuilder.setSpeed();
         enemyBuilder.setSize();
+        enemyBuilder.setTag();
         enemyBuilder.setPath(path);
         if (haveOffset) enemyBuilder.setOffset();
         return enemyBuilder.getEnemy();

@@ -17,6 +17,10 @@ public class BouncingBettyTowerBuilder implements ITowerBuilder {
         this.tower.y = y;
     }
 
+    public void setTag() {
+        this.tower.tag = "BouncingBettyTower";
+    }
+
     public void setAttackSpeed() {
         this.tower.attackSpeed = 4;
     }

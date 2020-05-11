@@ -1,9 +1,6 @@
-package csc133.towerdefense.game;
+package csc133.towerdefense.game.engine;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -12,12 +9,16 @@ import android.view.SurfaceView;
 
 import java.util.ArrayList;
 
-import csc133.towerdefense.game.interfaces.IGameEngineBroadcaster;
-import csc133.towerdefense.game.interfaces.IGameStarter;
-import csc133.towerdefense.game.interfaces.IInputObserver;
+import csc133.towerdefense.game.Background;
+import csc133.towerdefense.game.BitmapStore;
+import csc133.towerdefense.game.GameObjectSystem;
+import csc133.towerdefense.game.ui.HUD;
+import csc133.towerdefense.game.engine.interfaces.IEngineController;
+import csc133.towerdefense.game.engine.interfaces.IGameEngineBroadcaster;
+import csc133.towerdefense.game.engine.interfaces.IInputObserver;
+import csc133.towerdefense.game.ui.UIController;
 
-public class GameEngine extends SurfaceView implements Runnable, IGameStarter,
-        IGameEngineBroadcaster {
+public class GameEngine extends SurfaceView implements Runnable, IGameEngineBroadcaster, IEngineController {
     public static final int MAX_FPS = 60;
     public static final int MILLIS_IN_SECOND = 1000;
     public static final int FRAME_PERIOD = MILLIS_IN_SECOND / MAX_FPS;
@@ -30,7 +31,8 @@ public class GameEngine extends SurfaceView implements Runnable, IGameStarter,
     Thread gameThread;
     SurfaceHolder holder;
 
-    private ArrayList<IInputObserver> inputObservers = new ArrayList();
+    private ArrayList<IInputObserver>
+            inputObservers = new ArrayList();
 
     private Background background;
 
@@ -40,32 +42,34 @@ public class GameEngine extends SurfaceView implements Runnable, IGameStarter,
     PhysicsEngine mPhysicsEngine;
     HUD mHUD;
     Renderer mRenderer;
-    GameObjectSystem gameObjectSystem;
     LevelManager mLevelManager;
 
     public GameEngine(Context context, Point size) {
         super(context);
+        // Prepare the bitmap store and sound engine
+        //BitmapStore bs = BitmapStore.getInstance(context);
+        //SoundEngine se = SoundEngine.getInstance(context);
 
-        mHUD = new HUD(size);
-        mSoundEngine = new SoundEngine(context);
+        // Initialize all the significant classes
+        // that make the engine work
+        //mHUD = new HUD(context, size);
         mGameState = new GameState(this, context);
-        mUIController = new UIController(this);
+        //mUIController = new UIController(this, size);
         mPhysicsEngine = new PhysicsEngine();
-        mRenderer = new Renderer(this);
+        mRenderer = new Renderer(this, size);
+        mLevelManager = new LevelManager(context,this, mRenderer.getPixelsPerMetre());
+    }
 
-        mLevelManager = new LevelManager(context, this, mRenderer.getPixelPerMetre());
-
-        // Even just 10 particles look good
-        // But why have less when you can have more
-        gameObjectSystem.init();
-
-        holder = getHolder();
-
-        background = new Background();
-        background.initialize(context, "background", size);
-
-        gameThread = new Thread(this);
-        gameThread.start();
+    public void startNewLevel() {
+        // Clear the bitmap store
+        BitmapStore.clearStore();
+        // Clear all the observers and add the UI observer back
+        // When we call buildGameObjects the
+        // player's observer will be added too
+        inputObservers.clear();
+        mUIController.addObserver(this);
+        mLevelManager.setCurrentLevel(mGameState.getCurrentLevel());
+        mLevelManager.buildGameObjects(mGameState);
     }
 
     // For the game engine broadcaster interface

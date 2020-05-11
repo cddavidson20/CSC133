@@ -7,6 +7,10 @@ public class MachineGunTowerBuilder implements ITowerBuilder {
         this.tower = new Tower();
     }
 
+    public void setTag() {
+        this.tower.tag = "MachineGunTower";
+    }
+
     public void setSize() {
         this.tower.width = 70;
         this.tower.height = 70;

@@ -17,9 +17,10 @@ import csc133.towerdefense.game.gameobject.tower.MachineGunTowerBuilder;
 import csc133.towerdefense.game.gameobject.tower.SniperTowerBuilder;
 import csc133.towerdefense.game.gameobject.tower.Tower;
 import csc133.towerdefense.game.gameobject.tower.TowerCreator;
+import csc133.towerdefense.game.level.Paths;
 import csc133.towerdefense.game.movepath.MovePath;
 
-class GameObjectSystem {
+public class GameObjectSystem {
     ArrayList<Enemy> enemies;
     ArrayList<Bullet> bullets;
     ArrayList<Tower> towers;

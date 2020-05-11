@@ -7,12 +7,10 @@ import android.graphics.PointF;
 
 import java.util.ArrayList;
 
-import csc133.towerdefense.game.interfaces.IDrawable;
-
 /**
  * The path that the enemies will travel on.
  */
-public class MovePath implements IDrawable {
+public class MovePath {
     public ArrayList<PointF> points;
     public float width;
 

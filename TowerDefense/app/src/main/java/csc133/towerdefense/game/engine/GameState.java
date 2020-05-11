@@ -1,8 +1,8 @@
-package csc133.towerdefense.game;
+package csc133.towerdefense.game.engine;
 
 import android.content.Context;
 
-import csc133.towerdefense.game.interfaces.IGameStarter;
+import csc133.towerdefense.game.engine.interfaces.IEngineController;
 
 public final class GameState {
     private static volatile boolean mThreadRunning = false;
@@ -12,17 +12,19 @@ public final class GameState {
 
     // This object will have access to the deSpawnReSpawn method
     // in GameEngine- once it is initialized
-    private IGameStarter gameStarter;
+    private IEngineController engineController;
 
-    private int lives;
-    private int gold;
-    private int wave;
-    private int mNumShips;
-    public int level;
+    public long startTimeInMillis;
 
-    GameState(IGameStarter gs, Context context){
+    public int lives;
+    public int gold;
+    public int currentWave;
+    public int enemiesRemaining;
+    public int currentLevel;
+
+    GameState(IEngineController ec, Context context){
         // This initializes the gameStarter reference
-        gameStarter = gs;
+        engineController = ec;
     }
 
     private void endGame(){
@@ -30,20 +32,11 @@ public final class GameState {
         mPaused = true;
     }
 
-    void startNewGame(){
-        level = 0;
-        wave = 0;
-        //mNumShips = 3;
-
-        // Don't want to be drawing objects
-        // while deSpawnReSpawn is
-        // clearing them and spawning them again
-        stopDrawing();
-        gameStarter.deSpawnReSpawn();
-        resume();
-
-        // Now we can draw again
-        startDrawing();
+    void reset(){
+        currentLevel = 0;
+        currentWave = 0;
+        gold = 0;
+        lives = 10;
     }
 
     void loseLife(SoundEngine se){
@@ -55,9 +48,18 @@ public final class GameState {
         }
     }
 
-    int getNumShips(){
-        return mNumShips;
-}
+    void death() {
+        stopEverything();
+        SoundEngine.playPlayerBurn();
+    }
+
+    void startNewGame() {
+        stopEverything();
+        engineController.startNewLevel();
+        startEverything();
+        startTimeInMillis = System.currentTimeMillis();
+    }
+
 
     void pause(){
         mPaused = true;
@@ -72,11 +74,21 @@ public final class GameState {
         mGameOver = true;
         mThreadRunning = false;
     }
+
+    private void startEverything() {
+        mPaused = false;
+        mGameOver = false;
+        mDrawing = true;
+    }
+
     boolean getThreadRunning(){
         return mThreadRunning;
     }
     void startThread(){
         mThreadRunning = true;
+    }
+    void stopThread() {
+        mThreadRunning = false;
     }
     private void stopDrawing(){
         mDrawing = false;
@@ -90,8 +102,14 @@ public final class GameState {
     boolean getPaused(){
         return mPaused;
     }
-    boolean getGameOver(){
+    public boolean getGameOver(){
         return mGameOver;
+    }
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+    public void setCurrentLevel(int level) {
+        currentLevel = level;
     }
 
 }

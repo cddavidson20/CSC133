@@ -1,4 +1,4 @@
-package csc133.towerdefense.game;
+package csc133.towerdefense.game.ui;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -6,7 +6,10 @@ import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Rect;
 import java.util.ArrayList;
-class HUD {
+
+import csc133.towerdefense.game.engine.GameState;
+
+public class HUD {
     private int mTextFormatting;
     private int mScreenHeight;
     private int mScreenWidth;

@@ -21,6 +21,7 @@ public class Bullet extends GameObject {
 
     public Bullet(float x, float y, float targetX, float targetY, float size, float speed, float damage, float maxHealth) {
         super(x, y, size, damage);
+        this.tag = "Bullet";
         prevX = x;
         prevY = y;
         this.speed = speed;

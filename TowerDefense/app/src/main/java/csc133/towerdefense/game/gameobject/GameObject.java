@@ -1,16 +1,23 @@
 package csc133.towerdefense.game.gameobject;
 
+import android.graphics.Camera;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 
-import csc133.towerdefense.game.interfaces.IDrawable;
-import csc133.towerdefense.game.interfaces.IUpdatable;
+import csc133.towerdefense.game.engine.Transform;
+import csc133.towerdefense.game.engine.interfaces.IGraphicsComponent;
+import csc133.towerdefense.game.engine.interfaces.IUpdateComponent;
 
-public abstract class GameObject implements IDrawable, IUpdatable {
+public class GameObject {
     public float x;
     public float y;
     public float width;
     public float height;
     public boolean toDestroy;
+    public String tag;
+    private Transform transform;
+    IGraphicsComponent graphicsComponent;
+    IUpdateComponent updateComponent;
 
     public GameObject(float x, float y, float width, float height) {
         this.x = x;
@@ -27,7 +34,19 @@ public abstract class GameObject implements IDrawable, IUpdatable {
     public GameObject() {
     }
 
-    abstract public void draw(Canvas canvas);
+    public void draw(Canvas canvas, Paint paint, Camera camera) {
+        graphicsComponent.draw(canvas, paint, transform, camera);
+    }
 
-    abstract public void update();
+    public void update(long fps, Transform focusTransform) {
+        updateComponent.update(fps, transform, focusTransform);
+    }
+
+    void setTransform(Transform t) {
+        transform = t;
+    }
+
+    public Transform getTransform() {
+        return transform;
+    }
 }

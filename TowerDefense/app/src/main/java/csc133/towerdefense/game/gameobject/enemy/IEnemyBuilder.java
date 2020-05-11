@@ -17,5 +17,7 @@ public interface IEnemyBuilder {
 
     void setPath(MovePath path);
 
+    void setTag();
+
     Enemy getEnemy();
 }

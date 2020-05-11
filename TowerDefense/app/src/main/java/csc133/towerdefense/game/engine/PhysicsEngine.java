@@ -1,4 +1,4 @@
-package csc133.towerdefense.game;
+package csc133.towerdefense.game.engine;
 
 import android.util.Pair;
 
@@ -11,13 +11,16 @@ import csc133.towerdefense.game.gameobject.tower.Tower;
 import csc133.towerdefense.game.helpers.Functions;
 
 class PhysicsEngine {
-    // This signature and much more will
-    //change later in the project
-    boolean update(long fps, ArrayList<GameObject> gameObjects, GameState gs){
-        if(gos.mIsRunning){
-            gos.update(fps);
+    void update(long fps, ArrayList<GameObject> objects, GameState gs) {
+        for (GameObject object : objects) {
+            object.update(fps, objects.get(LevelManager.PLAYER_INDEX).getTransform());
         }
-        return false;
+
+        detectCollisions(gs, objects);
+    }
+
+    private void detectCollisions(GameState gs, ArrayList<GameObject> objects) {
+        // More code here soon
     }
 
     // Collision detection method will go here

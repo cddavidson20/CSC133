@@ -28,6 +28,10 @@ public class MidGradeAlienBuilder implements IEnemyBuilder {
         this.enemy.health = HEALTH_MAX;
     }
 
+    public void setTag() {
+        this.enemy.tag = "MidGradeAlien";
+    }
+
     public void setSpeed() {
         this.enemy.speed = SPEED;
     }

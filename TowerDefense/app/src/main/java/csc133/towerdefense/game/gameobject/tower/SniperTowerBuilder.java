@@ -17,6 +17,10 @@ public class SniperTowerBuilder implements ITowerBuilder {
         this.tower.y = y;
     }
 
+    public void setTag() {
+        this.tower.tag = "SniperTower";
+    }
+
     public void setAttackSpeed() {
         this.tower.attackSpeed = 1.2f;
     }

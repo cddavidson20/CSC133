@@ -17,5 +17,7 @@ public interface ITowerBuilder {
 
     void setSellPrice();
 
+    void setTag();
+
     Tower getTower();
 }

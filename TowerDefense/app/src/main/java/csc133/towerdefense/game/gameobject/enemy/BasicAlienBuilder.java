@@ -23,6 +23,10 @@ public class BasicAlienBuilder implements IEnemyBuilder {
         this.enemy.y = y;
     }
 
+    public void setTag() {
+        this.enemy.tag = "BasicAlien";
+    }
+
     public void setHealth() {
         this.enemy.healthMax = HEALTH_MAX;
         this.enemy.health = HEALTH_MAX;
