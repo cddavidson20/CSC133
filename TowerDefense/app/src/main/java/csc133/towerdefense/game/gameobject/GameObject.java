@@ -2,8 +2,8 @@ package csc133.towerdefense.game.gameobject;
 
 import android.graphics.Canvas;
 
-import csc133.towerdefense.game.IDrawable;
-import csc133.towerdefense.game.IUpdatable;
+import csc133.towerdefense.game.interfaces.IDrawable;
+import csc133.towerdefense.game.interfaces.IUpdatable;
 
 public abstract class GameObject implements IDrawable, IUpdatable {
     public float x;

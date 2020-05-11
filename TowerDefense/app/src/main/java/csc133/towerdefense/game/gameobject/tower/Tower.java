@@ -6,7 +6,7 @@ import android.graphics.Paint;
 
 import java.util.ArrayList;
 
-import csc133.towerdefense.game.GameLoop;
+import csc133.towerdefense.game.GameEngine;
 import csc133.towerdefense.game.gameobject.Bullet;
 import csc133.towerdefense.game.gameobject.GameObject;
 import csc133.towerdefense.game.gameobject.enemy.Enemy;
@@ -52,12 +52,12 @@ public class Tower extends GameObject {
             float xx = x + (float) (Math.cos((rotation) * Math.PI / 180) * (width / 2));
             float yy = y + (float) (Math.sin((rotation) * Math.PI / 180) * (height / 2));
             bullets.add(new Bullet(xx, yy, target.x, target.y, bulletSize, bulletSpeed, bulletDamage, bulletHealth));
-            lastFired = GameLoop.framesRan;
+            lastFired = GameEngine.framesRan;
         }
     }
 
     public boolean canFire() {
-        return GameLoop.framesRan >= lastFired + (GameLoop.MAX_FPS / attackSpeed);
+        return GameEngine.framesRan >= lastFired + (GameEngine.MAX_FPS / attackSpeed);
     }
 
     public void draw(Canvas canvas) {

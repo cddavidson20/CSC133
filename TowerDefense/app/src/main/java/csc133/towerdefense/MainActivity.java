@@ -6,12 +6,10 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
 
-import csc133.towerdefense.game.GameLoop;
+import csc133.towerdefense.game.GameEngine;
 
 public class MainActivity extends Activity {
-    GameLoop gameLoop;
-    int numberHorizontalPixels, numberVerticalPixels, blockSize,
-            gridWidth = 1, gridHeight;
+    GameEngine gameLoop;
     Paint paint;
 
     @Override
@@ -22,14 +20,9 @@ public class MainActivity extends Activity {
         Point size = new Point();
         display.getSize(size);
 
-        numberHorizontalPixels = size.x;
-        numberVerticalPixels = size.y;
-        blockSize = numberHorizontalPixels / gridWidth;
-        gridHeight = numberVerticalPixels / blockSize;
-
         paint = new Paint();
 
-        gameLoop = new GameLoop(this, size);
+        gameLoop = new GameEngine(this, size);
 
         setContentView(gameLoop);
 

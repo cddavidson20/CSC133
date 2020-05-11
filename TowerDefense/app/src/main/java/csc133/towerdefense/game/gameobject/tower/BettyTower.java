@@ -2,7 +2,7 @@ package csc133.towerdefense.game.gameobject.tower;
 
 import java.util.ArrayList;
 
-import csc133.towerdefense.game.GameLoop;
+import csc133.towerdefense.game.GameEngine;
 import csc133.towerdefense.game.gameobject.Bullet;
 
 public class BettyTower extends Tower {
@@ -26,7 +26,7 @@ public class BettyTower extends Tower {
             }
 
 
-            lastFired = GameLoop.framesRan;
+            lastFired = GameEngine.framesRan;
         }
     }
 }

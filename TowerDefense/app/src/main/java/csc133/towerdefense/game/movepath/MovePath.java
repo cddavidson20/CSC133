@@ -7,7 +7,7 @@ import android.graphics.PointF;
 
 import java.util.ArrayList;
 
-import csc133.towerdefense.game.IDrawable;
+import csc133.towerdefense.game.interfaces.IDrawable;
 
 /**
  * The path that the enemies will travel on.
