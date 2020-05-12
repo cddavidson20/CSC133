@@ -28,6 +28,10 @@ public class BasicAlienBuilder implements IEnemyBuilder {
         this.enemy.health = HEALTH_MAX;
     }
 
+    public void setGoldValue() {
+        this.enemy.goldValue = 3;
+    }
+
     public void setSpeed() {
         this.enemy.speed = SPEED;
     }
@@ -44,6 +48,9 @@ public class BasicAlienBuilder implements IEnemyBuilder {
 
         this.enemy.offsetX = randX;
         this.enemy.offsetY = randY;
+
+        this.enemy.x += randX;
+        this.enemy.y += randY;
     }
 
     public void setPath(MovePath path) {

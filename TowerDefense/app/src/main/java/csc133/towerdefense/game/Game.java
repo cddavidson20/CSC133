@@ -17,63 +17,50 @@ import csc133.towerdefense.game.gameobject.tower.SniperTowerBuilder;
 import csc133.towerdefense.game.gameobject.tower.Tower;
 import csc133.towerdefense.game.gameobject.tower.TowerCreator;
 import csc133.towerdefense.game.helpers.Functions;
+import csc133.towerdefense.game.level.Wave;
 import csc133.towerdefense.game.movepath.MovePath;
 
+// bro im lazy this is the renderer, game state, and the physics engine
 public class Game {
     ArrayList<Enemy> enemies;
     ArrayList<Bullet> bullets;
     ArrayList<Tower> towers;
-    MovePath[] paths;
-    public int level;
     ArrayList<Pair<Enemy, Bullet>> enemyBulletCollisions;
     ArrayList<Pair<Enemy, Tower>> enemyTowerCollisions;
+    public int gold;
+    public int lives;
 
-    AlienCreator alienCreator;
-    TowerCreator towerCreator;
-
-    public MovePath getCurrPath() {
-        return paths[level];
+    public int getEnemies() {
+        return enemies.size();
     }
+
 
     public Game() {
         init();
-        reset();
-
-        float startY = getCurrPath().getStartingPoint().y;
-
-        Random random = new Random();
-        for (int i = 0; i < 500; ++i) {
-            if (random.nextInt(100) > 80) {
-                alienCreator = new AlienCreator(new BasicAlienBuilder());
-            } else {
-                alienCreator = new AlienCreator((new MidGradeAlienBuilder()));
-            }
-            Enemy enemy = alienCreator.createAlien(-30 * i, startY, getCurrPath(), true);
-            enemies.add(enemy);
-        }
-        alienCreator = new AlienCreator(new MidGradeAlienBuilder());
-        enemies.add(alienCreator.createAlien(1000, 1000, getCurrPath(), true));
-
-        towerCreator = new TowerCreator(new BouncingBettyTowerBuilder());
-        towers.add(towerCreator.createTower(200, 200));
-        towerCreator = new TowerCreator(new SniperTowerBuilder());
-        towers.add(towerCreator.createTower(1300, 700));
-        towerCreator = new TowerCreator(new MachineGunTowerBuilder());
-        towers.add(towerCreator.createTower(600, 200));
 
     }
 
     public void init() {
-        enemies = new ArrayList<Enemy>();
-        bullets = new ArrayList<Bullet>();
-        towers = new ArrayList<Tower>();
-        enemyBulletCollisions = new ArrayList<Pair<Enemy, Bullet>>();
-        enemyTowerCollisions = new ArrayList<Pair<Enemy, Tower>>();
-        paths = Paths.Paths;
+        enemies = new ArrayList<>();
+        bullets = new ArrayList<>();
+        towers = new ArrayList<>();
+        enemyBulletCollisions = new ArrayList<>();
+        enemyTowerCollisions = new ArrayList<>();
+        newWave();
     }
 
     public void reset() {
-        level = 0;
+        this.gold = 100;
+        this.lives = 10;
+        enemies.clear();
+        bullets.clear();
+        towers.clear();
+        enemyBulletCollisions.clear();
+        enemyTowerCollisions.clear();
+    }
+
+    public void newWave() {
+        this.gold = 100;
         enemies.clear();
         bullets.clear();
         towers.clear();
@@ -103,6 +90,7 @@ public class Game {
         for (int i = 0; i < enemies.size(); ++i) {
             enemies.get(i).checkDeath();
             if (enemies.get(i).toDestroy) {
+                gold += enemies.get(i).goldValue;
                 enemies.remove(i);
                 --i;
             }
@@ -168,11 +156,18 @@ public class Game {
 
             tower.setTarget(enemy);
         }
+
+        // lazy code
+        for (Enemy enemy : enemies) {
+            MovePath path = enemy.path;
+            if (Functions.rectInRect(enemy.x, enemy.y, enemy.width, enemy.height, path.endX, path.endY, path.width, path.width)) {
+                enemy.toDestroy = true;
+                --lives;
+            }
+        }
     }
 
     public void draw(Canvas canvas) {
-        paths[level].draw(canvas);
-
         for (int i = 0; i < enemies.size(); ++i) {
             enemies.get(i).draw(canvas);
         }

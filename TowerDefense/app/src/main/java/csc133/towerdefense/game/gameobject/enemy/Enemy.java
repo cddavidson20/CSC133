@@ -20,7 +20,9 @@ public class Enemy extends GameObject {
     public float offsetX;
     public float offsetY;
 
-    MovePath path;
+    public int goldValue;
+
+    public MovePath path;
     int pathIndex;
 
     public Enemy() {

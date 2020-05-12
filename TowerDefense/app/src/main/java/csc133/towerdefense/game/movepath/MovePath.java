@@ -4,6 +4,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
+import android.graphics.Rect;
+import android.graphics.RectF;
 
 import java.util.ArrayList;
 
@@ -15,27 +17,32 @@ import csc133.towerdefense.game.IDrawable;
 public class MovePath implements IDrawable {
     public ArrayList<PointF> points;
     public float width;
+    public float startX;
+    public float startY;
+    public float endX;
+    public float endY;
 
-    public MovePath(PointF[] points, float width) {
-        this.points = new ArrayList<PointF>();
+    public ArrayList<RectF> rects;
+
+    public MovePath(PointF[] points, float width, float startX, float startY, float endX, float endY) {
+        this.points = new ArrayList<>();
         this.width = width;
+        this.startX = startX;
+        this.startY = startY;
+        this.endX = endX;
+        this.endY = endY;
+
         for (int i = 0; i < points.length; ++i) {
             PointF p = points[i];
             if (p == null) break;
             this.points.add(p);
         }
+        initRects();
     }
 
-    public PointF getStartingPoint() {
-        return points.get(0);
-    }
-
-    public void draw(Canvas canvas) {
-        Paint paint = new Paint();
-        paint.setStyle(Paint.Style.FILL);
-        paint.setColor(Color.WHITE);
-
+    void initRects() {
         PointF prevP = getStartingPoint();
+        rects = new ArrayList<RectF>();
 
         for (int i = 1; i < points.size(); ++i) {
             PointF p = points.get(i);
@@ -56,8 +63,29 @@ public class MovePath implements IDrawable {
                 top = p.y - width / 2;
             }
 
-            canvas.drawRect(left, top, right, bottom, paint);
+            rects.add(new RectF(left, top, right, bottom));
+
+
             prevP = p;
         }
+    }
+
+    public PointF getStartingPoint() {
+        return points.get(0);
+    }
+
+    public void draw(Canvas canvas) {
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.FILL);
+        paint.setColor(Color.WHITE);
+
+        for (RectF rect : rects) canvas.drawRect(rect, paint);
+
+        //draw end point
+        paint.setColor(Color.RED);
+        paint.setAlpha(255 / 2);
+        canvas.drawRect(endX - width / 2, endY - width / 2, endX + width / 2, endY + width / 2, paint);
+        paint.setAlpha(255);
+
     }
 }

@@ -28,6 +28,10 @@ public class MidGradeAlienBuilder implements IEnemyBuilder {
         this.enemy.health = HEALTH_MAX;
     }
 
+    public void setGoldValue() {
+        this.enemy.goldValue = 10;
+    }
+
     public void setSpeed() {
         this.enemy.speed = SPEED;
     }

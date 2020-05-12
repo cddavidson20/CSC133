@@ -6,10 +6,10 @@ import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
 
-import csc133.towerdefense.game.GameLoop;
+import csc133.towerdefense.game.GameEngine;
 
 public class MainActivity extends Activity {
-    GameLoop gameLoop;
+    GameEngine gameEngine;
     int numberHorizontalPixels, numberVerticalPixels, blockSize,
             gridWidth = 1, gridHeight;
     Paint paint;
@@ -29,22 +29,22 @@ public class MainActivity extends Activity {
 
         paint = new Paint();
 
-        gameLoop = new GameLoop(this, size);
+        gameEngine = new GameEngine(this, size);
 
-        setContentView(gameLoop);
+        setContentView(gameEngine);
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        gameLoop.pause();
+        gameEngine.pause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        gameLoop.resume();
+        gameEngine.resume();
     }
 
 }

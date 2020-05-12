@@ -9,6 +9,8 @@ public interface IEnemyBuilder {
 
     void setHealth();
 
+    void setGoldValue();
+
     void setSpeed();
 
     void setOffset();

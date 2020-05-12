@@ -62,6 +62,10 @@ public class Functions {
      */
     public static boolean rectInRect(float Ax, float Ay, float Aw, float Ah,
                                      float Bx, float By, float Bw, float Bh) {
+        Ax -= Aw / 2;
+        Ay -= Ah / 2;
+        Bx -= Bw / 2;
+        By -= Bh / 2;
         return Bx + Bw > Ax &&
                 By + Bh > Ay &&
                 Ax + Aw > Bx &&
@@ -123,6 +127,21 @@ public class Functions {
         float distance = (float) Math.sqrt((distX * distX) + (distY * distY));
         // if the distance is less than the radius, collision!
         return distance <= radius;
+    }
+
+    public static boolean circleInCircle(float x1, float y1, float radius1, float x2, float y2, float radius2) {
+        float xDif = x1 - x2;
+        float yDif = y1 - y2;
+        float distanceSquared = xDif * xDif + yDif * yDif;
+        return distanceSquared < (radius1 + radius2) * (radius1 + radius2);
+    }
+
+    public static boolean pointInRect(float x, float y, float objx, float objy, float objWidth, float objHeight) {
+       objx -= objWidth / 2;
+       objy -= objHeight / 2;
+        return (x > objx && y > objy &&
+                x < objx + objWidth &&
+                y < objy + objHeight);
     }
 
 }

@@ -12,7 +12,9 @@ public class Background {
 
     private Bitmap bitmap;
 
-    public void initialize(Context c, String background, Point objectSize) {
+    public void initialize(String background) {
+        Context c = GameEngine.context;
+        Point objectSize = GameEngine.size;
 
         // Make a resource id out of the string of the file name
         int resID = c.getResources().getIdentifier(background,
@@ -27,7 +29,8 @@ public class Background {
                         false);
     }
 
-    public void draw(Canvas canvas, Paint paint) {
+    public void draw(Canvas canvas) {
+        Paint paint = new Paint();
         int width = bitmap.getWidth();
         int height = bitmap.getHeight();
 
