@@ -85,7 +85,6 @@ public class LevelManager {
         Level level = levels[currentLevel];
         Wave wave = level.waves[currentWave];
         this.spawns = (ArrayList<Pair<Integer, String>>)(wave.spawns.clone());
-        System.out.println("nig" + currentLevel+ " "+ currentWave + " " + this.spawns.size());
     }
 
     public void draw(Canvas canvas) {
