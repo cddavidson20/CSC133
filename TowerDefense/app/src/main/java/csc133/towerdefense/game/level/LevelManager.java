@@ -47,7 +47,7 @@ public class LevelManager {
     }
 
     public boolean atFinalStage() {
-        return !hasNextWave() && !hasNextLevel();
+        return currentWave == 4 && !hasNextLevel();
     }
 
     public void reset() {
@@ -66,6 +66,7 @@ public class LevelManager {
             currentWave = 0;
             updateWave();
         } else {
+            currentWave = 4;
             System.out.println("Congratulations.. you won");
         }
     }

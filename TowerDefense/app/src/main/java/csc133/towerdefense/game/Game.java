@@ -27,7 +27,6 @@ public class Game {
 
     Game() {
         init();
-
     }
 
     private void init() {
@@ -39,12 +38,12 @@ public class Game {
         newWave();
 
         this.gold = 120;
-        this.lives = 20;
+        this.lives = 25;
     }
 
     void reset() {
         this.gold = 120;
-        this.lives = 10;
+        this.lives = 25;
         enemies.clear();
         bullets.clear();
         towers.clear();

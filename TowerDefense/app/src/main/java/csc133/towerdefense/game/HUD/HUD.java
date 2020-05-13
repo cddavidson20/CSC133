@@ -59,7 +59,7 @@ public class HUD implements IDrawable {
         // turret info
         paint.setAlpha(255);
         paint.setColor(Color.YELLOW);
-        paint.setTextSize(25);
+        paint.setTextSize(30);
         canvas.drawText("100G", 825, 250, paint);
         canvas.drawText("150G", 1075, 250, paint);
         canvas.drawText("200G", 1325, 250, paint);

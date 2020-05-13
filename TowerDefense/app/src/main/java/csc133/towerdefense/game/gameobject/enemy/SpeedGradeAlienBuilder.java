@@ -5,9 +5,9 @@ import java.util.Random;
 import csc133.towerdefense.game.movepath.MovePath;
 
 public class SpeedGradeAlienBuilder implements IEnemyBuilder {
-    static final float SIZE = 25;
+    static final float SIZE = 30;
     static final float HEALTH_MAX = 15;
-    static final float SPEED = 10;
+    static final float SPEED = 9;
     private Enemy enemy;
 
     public SpeedGradeAlienBuilder() {
