@@ -11,7 +11,7 @@ import csc133.towerdefense.game.gameobject.tower.Tower;
 import csc133.towerdefense.game.helpers.Functions;
 import csc133.towerdefense.game.movepath.MovePath;
 
-// bro im lazy this is the renderer, game state, and the physics engine
+// this is the renderer, game state, and the physics engine
 public class Game {
     ArrayList<Enemy> enemies;
     private ArrayList<Bullet> bullets;
@@ -39,7 +39,7 @@ public class Game {
         newWave();
 
         this.gold = 120;
-        this.lives = 10;
+        this.lives = 20;
     }
 
     void reset() {
@@ -53,7 +53,6 @@ public class Game {
     }
 
     void newWave() {
-        //this.gold = 100;
         enemies.clear();
         bullets.clear();
         enemyBulletCollisions.clear();

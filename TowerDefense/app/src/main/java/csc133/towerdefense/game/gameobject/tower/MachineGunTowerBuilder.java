@@ -8,8 +8,8 @@ public class MachineGunTowerBuilder implements ITowerBuilder {
     }
 
     public void setSize() {
-        this.tower.width = 70;
-        this.tower.height = 70;
+        this.tower.width = 80;
+        this.tower.height = 80;
     }
 
     public void setPosition(float x, float y) {

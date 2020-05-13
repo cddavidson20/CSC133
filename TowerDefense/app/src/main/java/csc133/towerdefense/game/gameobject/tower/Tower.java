@@ -104,44 +104,6 @@ public class Tower extends GameObject {
         paint.setAlpha(a / 3);
         canvas.drawCircle(x, y, attackRadius, paint);
         paint.setAlpha(a);
-
-        /*
-        int a = paint.getAlpha();
-        // draw radius line
-        paint.setStrokeWidth(1);
-        paint.setColor(Color.GRAY);
-        if (target != null) paint.setColor(Color.RED);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setAlpha(a / 3);
-        canvas.drawCircle(x, y, attackRadius, paint);
-        paint.setAlpha(a);
-
-        // draw pillbox
-        paint.setColor(Color.YELLOW);
-        paint.setStyle(Paint.Style.FILL);
-        paint.setStrokeWidth(1);
-        canvas.drawCircle(x, y, width / 2, paint);
-
-        paint.setStrokeWidth(2);
-        paint.setColor(Color.BLACK);
-        paint.setStyle(Paint.Style.STROKE);
-        canvas.drawCircle(x, y, width / 2, paint);
-
-        //draw cannon
-        paint.setStrokeWidth(1);
-        paint.setColor(Color.CYAN);
-        paint.setStyle(Paint.Style.FILL);
-        canvas.save();
-        canvas.rotate(rotation, x, y);
-        canvas.drawRect(x, y - height / 15, x + width / 2, y + height / 15, paint);
-        canvas.restore();
-
-        //draw dot
-        paint.setStrokeWidth(1);
-        paint.setColor(Color.DKGRAY);
-        paint.setStyle(Paint.Style.FILL);
-        canvas.drawCircle(x, y, width / 5, paint);
-        */
     }
 
 }

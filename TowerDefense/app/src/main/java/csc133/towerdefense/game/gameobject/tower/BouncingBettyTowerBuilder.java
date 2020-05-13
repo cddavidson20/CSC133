@@ -24,8 +24,8 @@ public class BouncingBettyTowerBuilder implements ITowerBuilder {
     public void setBulletStats() {
         this.tower.bulletSize = 8;
         this.tower.bulletSpeed = 15;
-        this.tower.bulletDamage = 4;
-        this.tower.bulletHealth = 2;
+        this.tower.bulletDamage = 3;
+        this.tower.bulletHealth = 1;
     }
 
     public void setAttackRadius() {
