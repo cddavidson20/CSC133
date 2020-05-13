@@ -40,10 +40,9 @@ public class Bullet extends GameObject {
         this.x += unitDirX * speed;
         this.y += unitDirY * speed;
 
-        if (timeAlive >= 3 * (60) || this.health <= 0) {
+        if (timeAlive >= 2 * (60) || this.health <= 0) {
             toDestroy = true;
         }
-
     }
 
     public void draw(Canvas canvas) {
@@ -52,6 +51,5 @@ public class Bullet extends GameObject {
         paint.setStyle(Paint.Style.FILL);
         paint.setStrokeWidth(1);
         canvas.drawCircle(x, y, width / 2, paint);
-        //canvas.drawRect(x - width / 2, y - height / 2, x + width / 2, y + height / 2, myPaint);
     }
 }

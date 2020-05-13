@@ -4,9 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Point;
-import android.graphics.Rect;
 
 public class Background {
 
@@ -30,15 +28,7 @@ public class Background {
     }
 
     public void draw(Canvas canvas) {
-        Paint paint = new Paint();
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-
-        // For the regular bitmap
-        Rect fromRect1 = new Rect(0, 0, width, height);
-        Rect toRect1 = new Rect(0, 0, width, height);
-
         // draw the bitmap
-        canvas.drawBitmap(bitmap, fromRect1, toRect1, paint);
+        canvas.drawBitmap(bitmap, 0, 0, null);
     }
 }

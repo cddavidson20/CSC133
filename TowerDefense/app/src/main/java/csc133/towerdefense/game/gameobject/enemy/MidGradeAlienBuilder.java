@@ -41,6 +41,7 @@ public class MidGradeAlienBuilder implements IEnemyBuilder {
         this.enemy.height = SIZE;
     }
 
+    // explained in basic alien builder
     public void setOffset() {
         Random random = new Random();
         float randX = (random.nextBoolean() ? 1 : -1) * ((float) Math.random() * this.enemy.path.width / 2 - SIZE / 2);

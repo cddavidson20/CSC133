@@ -6,8 +6,7 @@ import csc133.towerdefense.game.movepath.MovePath;
 
 /**
  * The path that the enemy units follow. Each index is a path
- * for a level. The points are the enemies' destination. Logic is
- * done in the Enemy class.
+ * for a level. The points are the enemies' destination.
  */
 public class Paths {
     public static final MovePath[] Paths =  new MovePath[] {

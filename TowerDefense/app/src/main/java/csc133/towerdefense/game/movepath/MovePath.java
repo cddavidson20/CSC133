@@ -40,7 +40,7 @@ public class MovePath implements IDrawable {
         initRects();
     }
 
-    void initRects() {
+    private void initRects() {
         PointF prevP = getStartingPoint();
         rects = new ArrayList<RectF>();
 
@@ -70,7 +70,7 @@ public class MovePath implements IDrawable {
         }
     }
 
-    public PointF getStartingPoint() {
+    private PointF getStartingPoint() {
         return points.get(0);
     }
 

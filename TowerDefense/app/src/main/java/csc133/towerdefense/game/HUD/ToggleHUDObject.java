@@ -3,17 +3,18 @@ package csc133.towerdefense.game.HUD;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 
 import csc133.towerdefense.game.GameEngine;
 
+// changes appearance of hud objects depending on current player action
 public class ToggleHUDObject extends HUDObject {
 
-    boolean bool;
-    String trueImage;
-    String falseImage;
-    Bitmap trueBitmap;
-    Bitmap falseBitmap;
+    private boolean bool;
+    private String trueImage;
+    private String falseImage;
+    private Bitmap trueBitmap;
+    private Bitmap falseBitmap;
+
     public ToggleHUDObject(float x, float y, float width, float height, String tag, String trueImage, String falseImage, boolean bool) {
         super(x, y, width, height, tag, trueImage);
         this.bool = bool;
@@ -23,7 +24,7 @@ public class ToggleHUDObject extends HUDObject {
         this.setBool(bool);
     }
 
-    void generateBitmaps() {
+    private void generateBitmaps() {
         Context c = GameEngine.context;
 
         // Make a resource id out of the string of the file name
@@ -34,8 +35,8 @@ public class ToggleHUDObject extends HUDObject {
 
         bitmap = Bitmap
                 .createScaledBitmap(bitmap,
-                        (int)width,
-                        (int)height,
+                        (int) width,
+                        (int) height,
                         false);
         this.image = trueImage;
         init();
@@ -47,7 +48,7 @@ public class ToggleHUDObject extends HUDObject {
 
     public void setBool(boolean bool) {
         this.bool = bool;
-        if (bool == true) {
+        if (bool) {
             this.bitmap = trueBitmap;
         } else {
             this.bitmap = falseBitmap;

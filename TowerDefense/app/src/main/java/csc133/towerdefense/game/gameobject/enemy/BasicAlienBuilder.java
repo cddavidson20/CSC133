@@ -41,6 +41,7 @@ public class BasicAlienBuilder implements IEnemyBuilder {
         this.enemy.height = SIZE;
     }
 
+    // Makes enemies have slightly different pathing points so they're not all single file.
     public void setOffset() {
         Random random = new Random();
         float randX = (random.nextBoolean() ? 1 : -1) * ((float) Math.random() * this.enemy.path.width / 2 - SIZE / 2);

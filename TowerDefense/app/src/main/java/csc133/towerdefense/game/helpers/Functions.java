@@ -3,7 +3,7 @@ package csc133.towerdefense.game.helpers;
 import android.graphics.PointF;
 
 /**
- * Functions (Methods) to help make coding easier. They just work man.
+ * Functions (Methods) to help make coding easier.
  */
 public class Functions {
     public static float getDirectionAngle(float x, float y, float targetX, float targetY) {
@@ -14,15 +14,6 @@ public class Functions {
         return (float) Math.atan2(yDiff, xDiff);
     }
 
-    /**
-     * Basically an atan2 method used to find the unit vector.
-     *
-     * @param x       Current x
-     * @param y       Current y
-     * @param targetX target or destination x
-     * @param targetY target or destination y
-     * @return the unit vector in the direction of targetX and targetY
-     */
     public static PointF getUnitDirection(float x, float y, float targetX, float targetY) {
         float resX;
         float resY;
@@ -38,28 +29,10 @@ public class Functions {
         return new PointF(resX, resY);
     }
 
-    /**
-     * Check for opposite signs between 2 numbers.
-     *
-     * @param x number 1
-     * @param y number 2
-     * @return if the numbers are opposite signs.
-     */
     public static boolean oppositeSigns(float x, float y) {
         return !((x < 0) == (y < 0));
     }
 
-    /**
-     * @param Ax point x of rect A
-     * @param Ay point y of rect A
-     * @param Aw width
-     * @param Ah
-     * @param Bx
-     * @param By
-     * @param Bw
-     * @param Bh
-     * @return
-     */
     public static boolean rectInRect(float Ax, float Ay, float Aw, float Ah,
                                      float Bx, float By, float Bw, float Bh) {
         Ax -= Aw / 2;
@@ -125,7 +98,7 @@ public class Functions {
         float distX = cx - testX;
         float distY = cy - testY;
         float distance = (float) Math.sqrt((distX * distX) + (distY * distY));
-        // if the distance is less than the radius, collision!
+        // if the distance is less than the radius, collision
         return distance <= radius;
     }
 

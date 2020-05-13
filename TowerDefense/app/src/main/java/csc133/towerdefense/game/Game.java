@@ -4,43 +4,34 @@ import android.graphics.Canvas;
 import android.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import csc133.towerdefense.game.gameobject.Bullet;
-import csc133.towerdefense.game.gameobject.enemy.AlienCreator;
-import csc133.towerdefense.game.gameobject.enemy.BasicAlienBuilder;
 import csc133.towerdefense.game.gameobject.enemy.Enemy;
-import csc133.towerdefense.game.gameobject.enemy.MidGradeAlienBuilder;
-import csc133.towerdefense.game.gameobject.tower.BouncingBettyTowerBuilder;
-import csc133.towerdefense.game.gameobject.tower.MachineGunTowerBuilder;
-import csc133.towerdefense.game.gameobject.tower.SniperTowerBuilder;
 import csc133.towerdefense.game.gameobject.tower.Tower;
-import csc133.towerdefense.game.gameobject.tower.TowerCreator;
 import csc133.towerdefense.game.helpers.Functions;
-import csc133.towerdefense.game.level.Wave;
 import csc133.towerdefense.game.movepath.MovePath;
 
 // bro im lazy this is the renderer, game state, and the physics engine
 public class Game {
     ArrayList<Enemy> enemies;
-    ArrayList<Bullet> bullets;
+    private ArrayList<Bullet> bullets;
     ArrayList<Tower> towers;
-    ArrayList<Pair<Enemy, Bullet>> enemyBulletCollisions;
-    ArrayList<Pair<Enemy, Tower>> enemyTowerCollisions;
-    public int gold;
-    public int lives;
+    private ArrayList<Pair<Enemy, Bullet>> enemyBulletCollisions;
+    private ArrayList<Pair<Enemy, Tower>> enemyTowerCollisions;
+    int gold;
+    int lives;
 
-    public int getEnemies() {
+    int getEnemies() {
         return enemies.size();
     }
 
 
-    public Game() {
+    Game() {
         init();
 
     }
 
-    public void init() {
+    private void init() {
         enemies = new ArrayList<>();
         bullets = new ArrayList<>();
         towers = new ArrayList<>();
@@ -49,7 +40,7 @@ public class Game {
         newWave();
     }
 
-    public void reset() {
+    void reset() {
         this.gold = 100;
         this.lives = 10;
         enemies.clear();
@@ -59,7 +50,7 @@ public class Game {
         enemyTowerCollisions.clear();
     }
 
-    public void newWave() {
+    void newWave() {
         this.gold = 100;
         enemies.clear();
         bullets.clear();
@@ -68,7 +59,7 @@ public class Game {
         enemyTowerCollisions.clear();
     }
 
-    public void update() {
+    void update() {
         enemyBulletCollisions.clear();
         enemyTowerCollisions.clear();
 
@@ -138,8 +129,8 @@ public class Game {
         // handle enemy and bullet collisions
         for (int i = 0; i < enemyBulletCollisions.size(); ++i) {
             Pair p = enemyBulletCollisions.get(i);
-            Enemy enemy = (Enemy)p.first;
-            Bullet bullet = (Bullet)p.second;
+            Enemy enemy = (Enemy) p.first;
+            Bullet bullet = (Bullet) p.second;
 
             // check if bullet is alive to do dmg (for the line checks specifically)
             if (bullet.health > 0) {
@@ -151,8 +142,8 @@ public class Game {
         // handle tower (attack radius) and enemy collisions
         for (int i = 0; i < enemyTowerCollisions.size(); ++i) {
             Pair p = enemyTowerCollisions.get(i);
-            Enemy enemy = (Enemy)p.first;
-            Tower tower = (Tower)p.second;
+            Enemy enemy = (Enemy) p.first;
+            Tower tower = (Tower) p.second;
 
             tower.setTarget(enemy);
         }

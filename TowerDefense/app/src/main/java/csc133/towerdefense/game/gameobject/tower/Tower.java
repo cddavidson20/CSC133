@@ -61,10 +61,13 @@ public class Tower extends GameObject {
     }
 
     public void draw(Canvas canvas) {
-        draw(canvas, new Paint());
+        Paint paint = new Paint();
+
+        //draw(canvas, new Paint());
     }
 
     public void draw(Canvas canvas, Paint paint) {
+        /*
         int a = paint.getAlpha();
         // draw radius line
         paint.setStrokeWidth(1);
@@ -80,13 +83,11 @@ public class Tower extends GameObject {
         paint.setStyle(Paint.Style.FILL);
         paint.setStrokeWidth(1);
         canvas.drawCircle(x, y, width / 2, paint);
-        //canvas.drawRect(x - width / 2, y - height / 2, x + width / 2, y + height / 2, paint);
 
         paint.setStrokeWidth(2);
         paint.setColor(Color.BLACK);
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawCircle(x, y, width / 2, paint);
-        //canvas.drawRect(x - width / 2, y - height / 2, x + width / 2, y + height / 2, paint);
 
         //draw cannon
         paint.setStrokeWidth(1);
@@ -102,7 +103,7 @@ public class Tower extends GameObject {
         paint.setColor(Color.DKGRAY);
         paint.setStyle(Paint.Style.FILL);
         canvas.drawCircle(x, y, width / 5, paint);
+        */
     }
-
 
 }

@@ -1,7 +1,6 @@
 package csc133.towerdefense;
 
 import android.app.Activity;
-import android.graphics.Paint;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.view.Display;
@@ -10,9 +9,11 @@ import csc133.towerdefense.game.GameEngine;
 
 public class MainActivity extends Activity {
     GameEngine gameEngine;
-    int numberHorizontalPixels, numberVerticalPixels, blockSize,
-            gridWidth = 1, gridHeight;
-    Paint paint;
+    int numberHorizontalPixels;
+    int numberVerticalPixels;
+    int blockSize;
+    int gridWidth = 1;
+    int gridHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,12 +28,9 @@ public class MainActivity extends Activity {
         blockSize = numberHorizontalPixels / gridWidth;
         gridHeight = numberVerticalPixels / blockSize;
 
-        paint = new Paint();
-
         gameEngine = new GameEngine(this, size);
 
         setContentView(gameEngine);
-
     }
 
     @Override

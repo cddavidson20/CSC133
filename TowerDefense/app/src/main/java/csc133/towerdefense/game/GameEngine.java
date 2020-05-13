@@ -43,18 +43,20 @@ public class GameEngine extends SurfaceView implements Runnable {
 
     public static Context context;
     public static Point size;
-
+    public static SoundEngine soundEngine;
 
     public GameEngine(Context context, Point size) {
         super(context);
-        this.context = context;
-        this.size = size;
+        GameEngine.context = context;
+        GameEngine.size = size;
 
         holder = getHolder();
         game = new Game();
 
         levelManager = new LevelManager();
         hud = new HUD();
+        soundEngine = new SoundEngine(context);
+
         setPaused(true);
 
         gameThread = new Thread(this);
@@ -119,12 +121,12 @@ public class GameEngine extends SurfaceView implements Runnable {
 
             if (levelManager.atFinalStage()) {
                 System.out.println("Congratulations, you won");
+                //soundEngine.playWin();
             } else {
                 game.newWave();
                 this.towerBeingPlaced = null;
                 this.placingTower = false;
                 setPaused(true);
-
             }
         }
         levelManager.update(game.enemies);
@@ -150,7 +152,7 @@ public class GameEngine extends SurfaceView implements Runnable {
         hud.draw(canvas);
 
         if (towerBeingPlaced != null) {
-            Paint pain = new Paint();
+            Paint matrixPaint = new Paint();
             ColorMatrix cm = new ColorMatrix();
 
             if (towerIsPlaceable(towerBeingPlaced)) {
@@ -160,20 +162,17 @@ public class GameEngine extends SurfaceView implements Runnable {
             }
 
             ColorMatrixColorFilter f = new ColorMatrixColorFilter(cm);
-            pain.setColorFilter(f);
-            towerBeingPlaced.draw(canvas, pain);
+            matrixPaint.setColorFilter(f);
+            towerBeingPlaced.draw(canvas, matrixPaint);
         }
 
         // FPS text
         paint.setStyle(Paint.Style.FILL);
         paint.setTextSize(35);
-
         paint.setColor(Color.RED);
-
         canvas.drawText("FPS: " + FPS, 5, 40, paint);
 
-
-        // FPS text
+        // HUD text
         paint.setColor(Color.YELLOW);
         canvas.drawText("Gold: " + (game.gold), 405, 40, paint);
         paint.setColor(Color.WHITE);
@@ -181,12 +180,10 @@ public class GameEngine extends SurfaceView implements Runnable {
         canvas.drawText("Level: " + (levelManager.currentLevel + 1), 805, 40, paint);
         canvas.drawText("Wave: " + (levelManager.currentWave + 1), 1005, 40, paint);
 
-
         holder.unlockCanvasAndPost(canvas);
     }
 
     boolean towerIsPlaceable(Tower tower) {
-
         // check if tower is on top of other towers
         for (Tower other : game.towers) {
             if (Functions.circleInCircle(tower.x, tower.y, tower.width / 2, other.x, other.y, other.width / 2)) {
@@ -205,16 +202,13 @@ public class GameEngine extends SurfaceView implements Runnable {
 
         // check if tower is on hud
         RectF rect = hud.hitbox;
-        if (Functions.circleInRect(tower.x, tower.y, tower.width / 2,
+        return !Functions.circleInRect(tower.x, tower.y, tower.width / 2,
                 (rect.left + rect.right) / 2, (rect.bottom + rect.top) / 2,
-                (rect.right - rect.left), rect.bottom - rect.top)) {
-            return false;
-        }
-        return true;
+                (rect.right - rect.left), rect.bottom - rect.top);
     }
 
     boolean placingTower = false;
-    Tower towerBeingPlaced;
+    Tower towerBeingPlaced = null;
 
     void setPaused(boolean bool) {
         gamePaused = bool;
@@ -225,33 +219,43 @@ public class GameEngine extends SurfaceView implements Runnable {
 
     @Override
     public boolean onTouchEvent(MotionEvent motionEvent) {
-        if (hud == null) { return false; }
+        if (hud == null) {
+            return false;
+        }
+        // x and y of a tap on screen
         float x = motionEvent.getX();
         float y = motionEvent.getY();
-        if (motionEvent.getAction() == motionEvent.ACTION_UP && placingTower) {
-            if (towerIsPlaceable(towerBeingPlaced)) {
+
+        // when finger up while holding a tower, place tower.
+        if (motionEvent.getAction() == MotionEvent.ACTION_UP && placingTower) {
+            if (towerIsPlaceable(towerBeingPlaced) && game.gold >= towerBeingPlaced.buyPrice) {
                 game.gold -= towerBeingPlaced.buyPrice;
                 towerBeingPlaced.x = x;
                 towerBeingPlaced.y = y;
                 game.towers.add(towerBeingPlaced);
-
+                soundEngine.playTowerPlaced();
+            } else {
+                soundEngine.playNotPlaceable();
             }
-
             towerBeingPlaced = null;
             placingTower = false;
-
         }
 
-        if (motionEvent.getAction() == motionEvent.ACTION_MOVE && placingTower) {
+        // hold tower in hand while deciding to place tower
+        if (motionEvent.getAction() == MotionEvent.ACTION_MOVE && placingTower) {
             towerBeingPlaced.x = x;
             towerBeingPlaced.y = y;
         }
 
-        if (motionEvent.getAction() == motionEvent.ACTION_DOWN) {
+        // on screen tap, decide what happens
+        if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             String buttonPressed = hud.checkPressed(x, y);
+            // click noise if screen is clicked.
+            soundEngine.playClick();
 
             switch (buttonPressed) {
                 case "reset":
+                    soundEngine.playLose();
                     this.towerBeingPlaced = null;
                     this.placingTower = false;
                     levelManager.reset();
@@ -281,7 +285,7 @@ public class GameEngine extends SurfaceView implements Runnable {
                     towerBeingPlaced = tc3.createTower(x, y);
                     break;
                 default:
-                    System.err.println("the fuck is this? " + buttonPressed);
+                    System.err.println("Not button on HUD" + buttonPressed);
             }
         }
 

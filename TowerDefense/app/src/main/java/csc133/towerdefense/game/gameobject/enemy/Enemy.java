@@ -73,7 +73,7 @@ public class Enemy extends GameObject {
             this.y = postY;
         }
 
-        // if my dude at the point then get to next point u slackin bro
+        // if unit is at the point then get to next point
         if ((Math.abs(x - targetX) == 0) && (Math.abs(y - targetY) == 0)) {
             nextPoint();
         }

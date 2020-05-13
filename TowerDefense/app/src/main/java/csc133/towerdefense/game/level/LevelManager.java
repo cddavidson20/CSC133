@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import csc133.towerdefense.game.Background;
 import csc133.towerdefense.game.GameEngine;
-import csc133.towerdefense.game.gameobject.GameObject;
 import csc133.towerdefense.game.gameobject.enemy.AlienCreator;
 import csc133.towerdefense.game.gameobject.enemy.BasicAlienBuilder;
 import csc133.towerdefense.game.gameobject.enemy.Enemy;
@@ -61,7 +60,7 @@ public class LevelManager {
         if (hasNextWave()) {
             ++currentWave;
             updateWave();
-        } else if (hasNextLevel()){
+        } else if (hasNextLevel()) {
             ++currentLevel;
             currentWave = 0;
             updateWave();
@@ -84,8 +83,7 @@ public class LevelManager {
         waveFrame = GameEngine.framesRan;
         Level level = levels[currentLevel];
         Wave wave = level.waves[currentWave];
-        this.spawns = (ArrayList<Pair<Integer, String>>)(wave.spawns.clone());
-        System.out.println("nig" + currentLevel+ " "+ currentWave + " " + this.spawns.size());
+        this.spawns = (ArrayList<Pair<Integer, String>>) (wave.spawns.clone());
     }
 
     public void draw(Canvas canvas) {
@@ -96,14 +94,14 @@ public class LevelManager {
 
     public void update(ArrayList<Enemy> enemies) {
         for (int i = 0; i < spawns.size(); ++i) {
-            // we read instruction on what to make and when to make
+            // read instruction on what to make and when to make
             Pair<Integer, String> spawn = spawns.get(i);
             int frameToSpawn = spawn.first;
             String unitToSpawn = spawn.second;
 
-            // if the time is to make it now then i have to make it now
+            // if the time is to make it now then have to make it now
             if (GameEngine.framesRan - waveFrame == frameToSpawn) {
-                // now i find out what i make
+                // now find out what to make
                 switch (unitToSpawn) {
                     case "BasicAlien":
                         alienCreator = new AlienCreator(new BasicAlienBuilder());
@@ -116,14 +114,14 @@ public class LevelManager {
                         break;
                 }
 
-                // now i make
+                // now make
                 float startX = paths[currentLevel].startX;
                 float startY = paths[currentLevel].startY;
                 MovePath currentPath = paths[currentLevel];
 
                 enemies.add(alienCreator.createAlien(startX, startY, currentPath, true));
 
-                // now we remove the instruction to create alien cus we made it
+                // now remove the instruction to create alien
                 spawns.remove(i);
                 --i;
             }
