@@ -17,6 +17,7 @@ public class TowerCreator {
         towerBuilder.setAttackRadius();
         towerBuilder.setBuyPrice();
         towerBuilder.setSellPrice();
+        towerBuilder.setBitmap();
 
         return towerBuilder.getTower();
     }

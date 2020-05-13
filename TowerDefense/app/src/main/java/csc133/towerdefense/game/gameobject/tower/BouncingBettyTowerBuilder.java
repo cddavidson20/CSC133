@@ -33,8 +33,13 @@ public class BouncingBettyTowerBuilder implements ITowerBuilder {
     }
 
     public void setBuyPrice() {
-        this.tower.buyPrice = 100;
+        this.tower.buyPrice = 150;
     }
+
+    public void setBitmap() {
+        tower.initBitmap("bouncing_betty");
+    }
+
 
     public void setSellPrice() {
         this.tower.sellPrice = 25;

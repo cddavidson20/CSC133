@@ -4,13 +4,13 @@ import java.util.Random;
 
 import csc133.towerdefense.game.movepath.MovePath;
 
-public class MidGradeAlienBuilder implements IEnemyBuilder {
-    static final float SIZE = 55;
-    static final float HEALTH_MAX = 50;
-    static final float SPEED = 3;
+public class SpeedGradeAlienBuilder implements IEnemyBuilder {
+    static final float SIZE = 25;
+    static final float HEALTH_MAX = 15;
+    static final float SPEED = 10;
     private Enemy enemy;
 
-    public MidGradeAlienBuilder() {
+    public SpeedGradeAlienBuilder() {
         this.enemy = new Enemy();
     }
 
@@ -29,7 +29,7 @@ public class MidGradeAlienBuilder implements IEnemyBuilder {
     }
 
     public void setGoldValue() {
-        this.enemy.goldValue = 7;
+        this.enemy.goldValue = 25;
     }
 
     public void setSpeed() {
@@ -41,7 +41,7 @@ public class MidGradeAlienBuilder implements IEnemyBuilder {
         this.enemy.height = SIZE;
     }
 
-    // explained in basic alien builder
+    // Makes enemies have slightly different pathing points so they're not all single file.
     public void setOffset() {
         Random random = new Random();
         float randX = (random.nextBoolean() ? 1 : -1) * ((float) Math.random() * this.enemy.path.width / 2 - SIZE / 2);
@@ -49,6 +49,9 @@ public class MidGradeAlienBuilder implements IEnemyBuilder {
 
         this.enemy.offsetX = randX;
         this.enemy.offsetY = randY;
+
+        this.enemy.x += randX;
+        this.enemy.y += randY;
     }
 
     public void setPath(MovePath path) {
@@ -58,6 +61,5 @@ public class MidGradeAlienBuilder implements IEnemyBuilder {
     public Enemy getEnemy() {
         return enemy;
     }
-
 
 }

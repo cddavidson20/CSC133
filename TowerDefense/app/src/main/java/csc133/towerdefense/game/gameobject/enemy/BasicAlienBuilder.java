@@ -7,7 +7,7 @@ import csc133.towerdefense.game.movepath.MovePath;
 public class BasicAlienBuilder implements IEnemyBuilder {
     static final float SIZE = 35;
     static final float HEALTH_MAX = 10;
-    static final float SPEED = 5;
+    static final float SPEED = 4;
     private Enemy enemy;
 
     public BasicAlienBuilder() {
@@ -29,7 +29,7 @@ public class BasicAlienBuilder implements IEnemyBuilder {
     }
 
     public void setGoldValue() {
-        this.enemy.goldValue = 3;
+        this.enemy.goldValue = 5;
     }
 
     public void setSpeed() {

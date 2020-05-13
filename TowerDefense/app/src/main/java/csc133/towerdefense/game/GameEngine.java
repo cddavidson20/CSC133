@@ -55,7 +55,7 @@ public class GameEngine extends SurfaceView implements Runnable {
 
         levelManager = new LevelManager();
         hud = new HUD();
-        soundEngine = new SoundEngine(context);
+        soundEngine = SoundEngine.getSoundEngine();
 
         setPaused(true);
 
@@ -112,21 +112,34 @@ public class GameEngine extends SurfaceView implements Runnable {
         }
     }
 
+    boolean youWon = false;
+    public static boolean youLost = false;
+
     private void update() {
         if (game.lives <= 0) {
             System.out.println("Congratulations, you LOST");
+            // play music
+            if (!youLost) soundEngine.playLose();
+            youLost = true;
         }
         if (game.getEnemies() == 0 && levelManager.getEnemiesRemaining() == 0) {
-            levelManager.next();
+            if (!youLost) {
+                levelManager.next();
 
-            if (levelManager.atFinalStage()) {
-                System.out.println("Congratulations, you won");
-                //soundEngine.playWin();
-            } else {
-                game.newWave();
+                if (levelManager.atFinalStage()) {
+                    System.out.println("Congratulations, you won");
+                    if (!youWon) soundEngine.playWin();
+                    youWon = true;
+                } else {
+                    if (levelManager.currentWave == 0) {
+                        game.towers.clear();
+                        game.gold = 100;
+                    }
+                    game.newWave();
+                    setPaused(true);
+                }
                 this.towerBeingPlaced = null;
                 this.placingTower = false;
-                setPaused(true);
             }
         }
         levelManager.update(game.enemies);
@@ -179,6 +192,19 @@ public class GameEngine extends SurfaceView implements Runnable {
         canvas.drawText("Lives: " + (game.lives), 605, 40, paint);
         canvas.drawText("Level: " + (levelManager.currentLevel + 1), 805, 40, paint);
         canvas.drawText("Wave: " + (levelManager.currentWave + 1), 1005, 40, paint);
+
+        if (youLost) {
+            paint.setTextSize(100);
+            paint.setColor(Color.RED);
+            paint.setTextAlign(Paint.Align.CENTER);
+            canvas.drawText("YOU LOST", GameEngine.size.x / 2, GameEngine.size.y / 2, paint);
+        } else if (youWon) {
+            paint.setTextSize(100);
+            paint.setColor(Color.BLUE);
+            paint.setTextAlign(Paint.Align.CENTER);
+            canvas.drawText("YOU WON", GameEngine.size.x / 2, GameEngine.size.y / 2, paint);
+
+        }
 
         holder.unlockCanvasAndPost(canvas);
     }
@@ -255,35 +281,40 @@ public class GameEngine extends SurfaceView implements Runnable {
 
             switch (buttonPressed) {
                 case "reset":
-                    soundEngine.playLose();
                     this.towerBeingPlaced = null;
                     this.placingTower = false;
                     levelManager.reset();
                     game.reset();
                     setPaused(true);
+                    youWon = false;
+                    youLost = false;
 
                     draw();
                     break;
+
                 case "pause":
                     setPaused(!gamePaused);
 
                     break;
+
                 case "machineguntower":
                     placingTower = true;
-
                     TowerCreator tc = new TowerCreator(new MachineGunTowerBuilder());
                     towerBeingPlaced = tc.createTower(x, y);
                     break;
+
                 case "bouncingbettytower":
                     placingTower = true;
                     TowerCreator tc2 = new TowerCreator(new BouncingBettyTowerBuilder());
                     towerBeingPlaced = tc2.createTower(x, y);
                     break;
+
                 case "snipertower":
                     placingTower = true;
                     TowerCreator tc3 = new TowerCreator(new SniperTowerBuilder());
                     towerBeingPlaced = tc3.createTower(x, y);
                     break;
+
                 default:
                     System.err.println("Not button on HUD" + buttonPressed);
             }

@@ -11,6 +11,7 @@ import csc133.towerdefense.game.gameobject.enemy.AlienCreator;
 import csc133.towerdefense.game.gameobject.enemy.BasicAlienBuilder;
 import csc133.towerdefense.game.gameobject.enemy.Enemy;
 import csc133.towerdefense.game.gameobject.enemy.MidGradeAlienBuilder;
+import csc133.towerdefense.game.gameobject.enemy.SpeedGradeAlienBuilder;
 import csc133.towerdefense.game.movepath.MovePath;
 import csc133.towerdefense.game.movepath.Paths;
 
@@ -109,6 +110,8 @@ public class LevelManager {
                     case "MidGradeAlien":
                         alienCreator = new AlienCreator(new MidGradeAlienBuilder());
                         break;
+                    case "HighGradeAlien":
+                        alienCreator = new AlienCreator(new SpeedGradeAlienBuilder());
                     default:
                         System.err.println("Unknown unit tag: " + unitToSpawn);
                         break;

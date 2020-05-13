@@ -36,6 +36,10 @@ public class MachineGunTowerBuilder implements ITowerBuilder {
         this.tower.buyPrice = 100;
     }
 
+    public void setBitmap() {
+        tower.initBitmap("machine_gun");
+    }
+
     public void setSellPrice() {
         this.tower.sellPrice = 25;
     }

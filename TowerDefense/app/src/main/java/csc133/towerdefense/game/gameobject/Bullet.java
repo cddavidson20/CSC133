@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PointF;
 
+import csc133.towerdefense.game.GameEngine;
 import csc133.towerdefense.game.helpers.Functions;
 
 public class Bullet extends GameObject {
@@ -18,6 +19,7 @@ public class Bullet extends GameObject {
 
     public float prevX;
     public float prevY;
+    public float lifespan = .5f;
 
     public Bullet(float x, float y, float targetX, float targetY, float size, float speed, float damage, float maxHealth) {
         super(x, y, size, damage);
@@ -40,7 +42,7 @@ public class Bullet extends GameObject {
         this.x += unitDirX * speed;
         this.y += unitDirY * speed;
 
-        if (timeAlive >= 2 * (60) || this.health <= 0) {
+        if (timeAlive >= lifespan * (GameEngine.MAX_FPS) || this.health <= 0) {
             toDestroy = true;
         }
     }

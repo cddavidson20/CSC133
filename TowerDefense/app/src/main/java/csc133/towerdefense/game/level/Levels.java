@@ -14,32 +14,86 @@ public class Levels {
         if (initialized) return levels;
         initialized = true;
 
-        // level 0 wave 0 units
+        // level 0 ----
+        // wave 0
         ArrayList<Pair<Integer, String>> lv0wave0 = new ArrayList<>();
         lv0wave0.add(new Pair<>(1, "BasicAlien"));
         lv0wave0.add(new Pair<>(30, "MidGradeAlien"));
 
-        // level 0 wave 1 units
+        // wave 1
         ArrayList<Pair<Integer, String>> lv0wave1 = new ArrayList<>();
-        for (int i = 0; i < 10; ++i) {
+        for (int i = 0; i < 20; ++i) {
             lv0wave1.add(new Pair<>(i * GameEngine.MAX_FPS / 2, "BasicAlien"));
         }
-        for (int i = 0; i < 3; ++i) {
-            lv0wave1.add(new Pair<>(i * GameEngine.MAX_FPS * 10 / 3, "MidGradeAlien"));
+        for (int i = 0; i < 10; ++i) {
+            lv0wave1.add(new Pair<>(i * GameEngine.MAX_FPS * 2 / 3, "MidGradeAlien"));
         }
 
-        // level 0 wave 2 units
+        // wave 2
         ArrayList<Pair<Integer, String>> lv0wave2 = new ArrayList<>();
+        for (int i = 0; i < 50; ++i) {
+            lv0wave2.add(new Pair<>(i * GameEngine.MAX_FPS / 5, "BasicAlien"));
+        }
+        for (int i = 0; i < 5; ++i) {
+            lv0wave2.add(new Pair<>(i * GameEngine.MAX_FPS / 3, "MidGradeAlien"));
+        }
+        lv0wave2.add(new Pair<>(400, "HighGradeAlien"));
 
-        // level 1
+
+        // level 1 ----
+        // wave 0
         ArrayList<Pair<Integer, String>> lv1wave0 = new ArrayList<>();
-        ArrayList<Pair<Integer, String>> lv1wave1 = new ArrayList<>();
-        ArrayList<Pair<Integer, String>> lv1wave2 = new ArrayList<>();
+        for (int i = 0; i < 50; ++i) {
+            lv1wave0.add(new Pair<>(i * GameEngine.MAX_FPS / 5, "BasicAlien"));
+        }
+        for (int i = 0; i < 2; ++i) {
+            lv1wave0.add(new Pair<>(i * GameEngine.MAX_FPS * 2 / 3, "MidGradeAlien"));
+        }
 
-        // level 2
+        // wave 1
+        ArrayList<Pair<Integer, String>> lv1wave1 = new ArrayList<>();
+        for (int i = 0; i < 20; ++i) {
+            lv1wave1.add(new Pair<>(i * GameEngine.MAX_FPS / 2, "HighGradeAlien"));
+        }
+
+        // wave 2
+        ArrayList<Pair<Integer, String>> lv1wave2 = new ArrayList<>();
+        for (int i = 0; i < 5; ++i) {
+            lv1wave2.add(new Pair<>(i * GameEngine.MAX_FPS / 4, "MidGradeAlien"));
+        }
+        for (int i = 0; i < 15; ++i) {
+            lv1wave2.add(new Pair<>(i * GameEngine.MAX_FPS / 2, "HighGradeAlien"));
+        }
+
+        // level 2 ---- FINAL LEVEL
+        // wave 0
         ArrayList<Pair<Integer, String>> lv2wave0 = new ArrayList<>();
+        for (int i = 0; i < 30; ++i) {
+            lv2wave0.add(new Pair<>(i * GameEngine.MAX_FPS / 2, "BasicAlien"));
+        }
+        for (int i = 0; i < 20; ++i) {
+            lv2wave0.add(new Pair<>(i * GameEngine.MAX_FPS / 5, "BasicAlien"));
+        }
+        // wave 1
         ArrayList<Pair<Integer, String>> lv2wave1 = new ArrayList<>();
+        for (int i = 0; i < 50; ++i) {
+            lv2wave1.add(new Pair<>(i * GameEngine.MAX_FPS / 5, "BasicAlien"));
+        }
+        for (int i = 0; i < 50; ++i) {
+            lv2wave1.add(new Pair<>(i * GameEngine.MAX_FPS / 5, "MidGradeAlien"));
+        }
+        // wave 2
         ArrayList<Pair<Integer, String>> lv2wave2 = new ArrayList<>();
+        for (int i = 0; i < 50; ++i) {
+            lv2wave2.add(new Pair<>(i * GameEngine.MAX_FPS / 5, "BasicAlien"));
+        }
+        for (int i = 0; i < 50; ++i) {
+            lv2wave2.add(new Pair<>(i * GameEngine.MAX_FPS / 5, "MidGradeAlien"));
+        }
+        for (int i = 0; i < 50; ++i) {
+            lv2wave2.add(new Pair<>(i * GameEngine.MAX_FPS * 5/ 10, "HighGradeAlien"));
+        }
+
 
         // add waves into a wave array for each level.
         Wave[] level0Waves = new Wave[]{

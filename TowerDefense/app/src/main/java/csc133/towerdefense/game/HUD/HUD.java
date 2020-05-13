@@ -18,9 +18,11 @@ public class HUD implements IDrawable {
         buttons = new ArrayList<>();
         init();
     }
+
     private void init() {
         buttons.add(new HUDObject(250, 50, 200, 200, "reset", "reset"));
-        buttons.add(new ToggleHUDObject(500, 75, 200, 150, "pause", "play_button", "pause_button", true));
+        buttons.add(new ToggleHUDObject(500, 75, 200, 150, "pause", "play_button",
+                "pause_button", true));
         buttons.add(new HUDObject(750, 50, 200, 200, "machineguntower", "machine_gun"));
         buttons.add(new HUDObject(1000, 50, 200, 200, "bouncingbettytower", "bouncing_betty"));
         buttons.add(new HUDObject(1250, 50, 200, 200, "snipertower", "sniper"));
@@ -45,6 +47,7 @@ public class HUD implements IDrawable {
 
     @Override
     public void draw(Canvas canvas) {
+        // HUD bar
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(Color.GRAY);
@@ -53,6 +56,12 @@ public class HUD implements IDrawable {
         for (int i = 0; i < buttons.size(); ++i) {
             buttons.get(i).draw(canvas);
         }
+        // turret info
         paint.setAlpha(255);
+        paint.setColor(Color.YELLOW);
+        paint.setTextSize(25);
+        canvas.drawText("100G", 825, 250, paint);
+        canvas.drawText("150G", 1075, 250, paint);
+        canvas.drawText("200G", 1325, 250, paint);
     }
 }

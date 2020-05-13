@@ -28,6 +28,10 @@ public class SniperTowerBuilder implements ITowerBuilder {
         this.tower.bulletHealth = 4;
     }
 
+    public void setBitmap() {
+        tower.initBitmap("sniper");
+    }
+
     public void setAttackRadius() {
         this.tower.attackRadius = 500;
     }

@@ -25,7 +25,6 @@ public class Game {
         return enemies.size();
     }
 
-
     Game() {
         init();
 
@@ -38,10 +37,13 @@ public class Game {
         enemyBulletCollisions = new ArrayList<>();
         enemyTowerCollisions = new ArrayList<>();
         newWave();
+
+        this.gold = 120;
+        this.lives = 10;
     }
 
     void reset() {
-        this.gold = 100;
+        this.gold = 120;
         this.lives = 10;
         enemies.clear();
         bullets.clear();
@@ -51,10 +53,9 @@ public class Game {
     }
 
     void newWave() {
-        this.gold = 100;
+        //this.gold = 100;
         enemies.clear();
         bullets.clear();
-        towers.clear();
         enemyBulletCollisions.clear();
         enemyTowerCollisions.clear();
     }
@@ -83,6 +84,7 @@ public class Game {
             if (enemies.get(i).toDestroy) {
                 gold += enemies.get(i).goldValue;
                 enemies.remove(i);
+                SoundEngine.getSoundEngine().playEnemyKilled();
                 --i;
             }
         }
@@ -148,11 +150,12 @@ public class Game {
             tower.setTarget(enemy);
         }
 
-        // lazy code
+        // lazy code enemy hit end
         for (Enemy enemy : enemies) {
             MovePath path = enemy.path;
             if (Functions.rectInRect(enemy.x, enemy.y, enemy.width, enemy.height, path.endX, path.endY, path.width, path.width)) {
                 enemy.toDestroy = true;
+                SoundEngine.getSoundEngine().playLoseLife();
                 --lives;
             }
         }

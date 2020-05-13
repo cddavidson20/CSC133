@@ -10,7 +10,7 @@ import android.os.Build;
 
 import java.io.IOException;
 
-class SoundEngine {
+public class SoundEngine {
     // for playing sound effects
     private SoundPool sp;
     private int click_id;
@@ -21,8 +21,18 @@ class SoundEngine {
     private int notPlaceable_id;
     private int loseLife_id;
     private int enemyKilled_id;
+    private static boolean initialized  = false;
+    private static SoundEngine se;
 
-    SoundEngine(Context c){
+    public static SoundEngine getSoundEngine() {
+        if (initialized) return se;
+        initialized = true;
+        se = new SoundEngine();
+        return se;
+    }
+
+    private SoundEngine(){
+        Context c = GameEngine.context;
         // Initialize the SoundPool
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             AudioAttributes audioAttributes =
@@ -64,6 +74,8 @@ class SoundEngine {
         }
     }
 
+
+
     void playClick(){
         sp.play(click_id,1, 1, 0, 0, 1);
     }
@@ -76,16 +88,16 @@ class SoundEngine {
     void playTowerPlaced() {
         sp.play(towerPlaced_id,1, 1, 0, 0, 1);
     }
-    void playMachineGun() {
-        sp.play(machineGun_id,1, 1, 0, 0, 1);
+    public void playMachineGun() {
+        sp.play(machineGun_id,0.4f, 0.4f, 0, 0, 1);
     }
     void playNotPlaceable() {
         sp.play(notPlaceable_id,1, 1, 0, 0, 1);
     }
-    void playLoseLife() {
+    public void playLoseLife() {
         sp.play(loseLife_id,1, 1, 0, 0, 1);
     }
-    void playEnemyKilled() {
+    public void playEnemyKilled() {
         sp.play(enemyKilled_id,1, 1, 0, 0, 1);
     }
 
